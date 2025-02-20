@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { City, useCitySearch } from "../hooks/useCitySearch";
 
 const SidebarWrapper = styled.div<{ $collapsed: boolean }>`
   position: absolute;
@@ -33,8 +34,35 @@ const ToggleButton = styled.button`
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+
+const SuggestionsList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+`;
+
+const SuggestionItem = styled.li`
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+`;
+
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const { data: suggestions = [], isFetching, error } = useCitySearch(query);
 
   return (
     <SidebarWrapper $collapsed={collapsed}>
@@ -42,7 +70,26 @@ const Sidebar = () => {
         {collapsed ? <FiChevronRight size={20} /> : <FiChevronLeft size={20} />}
       </ToggleButton>
       <h2>Weather Map</h2>
-      <p>Search for a city to see the weather.</p>
+      <SearchInput
+        type="text"
+        placeholder="Search city..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      {isFetching && <p>Loading...</p>}
+      {error && <p>Error fetching cities</p>}
+      <SuggestionsList>
+        {suggestions?.map((city: City, index: number) => (
+          <SuggestionItem
+            key={index}
+            onClick={() =>
+              console.log(`Selected: ${city.name}, ${city.lat}, ${city.lon}`)
+            }
+          >
+            {city.name}
+          </SuggestionItem>
+        ))}
+      </SuggestionsList>
     </SidebarWrapper>
   );
 };
