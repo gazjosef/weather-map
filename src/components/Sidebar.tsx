@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { City, useCitySearch } from "../hooks/useCitySearch";
+import { City, useCity } from "../context/CityContext";
+import { useCitySearch } from "../hooks/useCitySearch";
 
 const SidebarWrapper = styled.div<{ $collapsed: boolean }>`
   position: absolute;
@@ -63,6 +64,7 @@ const Sidebar = () => {
   const [query, setQuery] = useState("");
 
   const { data: suggestions = [], isFetching, error } = useCitySearch(query);
+  const { setSelectedCity } = useCity();
 
   return (
     <SidebarWrapper $collapsed={collapsed}>
@@ -83,7 +85,8 @@ const Sidebar = () => {
           <SuggestionItem
             key={index}
             onClick={() =>
-              console.log(`Selected: ${city.name}, ${city.lat}, ${city.lon}`)
+              // console.log(`Selected: ${city.name}, ${city.lat}, ${city.lon}`)
+              setSelectedCity(city)
             }
           >
             {city.name}
