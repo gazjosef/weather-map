@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { useCity } from "../context/CityContext";
+import { useCity } from "../../context/CityContext";
 import styled from "styled-components";
 import { useEffect } from "react";
 

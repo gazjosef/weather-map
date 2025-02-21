@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { City, useCity } from "../context/CityContext";
-import { useCitySearch } from "../hooks/useCitySearch";
+import { City, useCity } from "../../context/CityContext";
+import { useCitySearch } from "../../hooks/useCitySearch";
 
 const SidebarWrapper = styled.div<{ $collapsed: boolean }>`
   position: absolute;
