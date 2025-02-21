@@ -5,10 +5,13 @@ import { useCity } from "../context/CityContext";
 import styled from "styled-components";
 
 const MapWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   // width: 100%;
-  width: 100vw;
+  width: calc(100vw - 250px); /* Adjust width to account for Sidebar */
   height: 100vh;
-  background: red; /* TEMPORARY - just to see if it's rendering */
+  background: red; /* TEMPORARY - Remove once confirmed */
 `;
 
 // const center: LatLngExpression = [-33.8688, 151.2093]; // Explicit type for Leaflet coordinates
