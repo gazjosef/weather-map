@@ -1,16 +1,10 @@
-import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { useCity } from "../../context/CityContext";
-import styled from "styled-components";
 import { useEffect } from "react";
 
-const MapWrapper = styled.div`
-  position: relative;
-  top: 0;
-  left: 0;
-  width: calc(100vw - 150px); /* Adjust width to account for Sidebar */
-  height: 100vh;
-`;
+import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+
+import { useCity } from "../../context/CityContext";
+import { MapWrapper } from "./Map.styles";
 
 const UpdateMapCenter = () => {
   const { selectedCity } = useCity();
