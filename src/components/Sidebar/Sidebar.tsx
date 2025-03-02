@@ -1,159 +1,104 @@
-import { useEffect, useState } from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import {
-  SidebarWrapper,
-  ToggleButton,
-  LayerControls,
-  OpacitySlider,
-} from "./Sidebar.styles";
-import { SearchInput, SuggestionsList, SuggestionItem } from "./Search.styles";
-import { useCity } from "../../context/CityContext";
+import { useState } from "react";
+import styled from "styled-components";
+import Select from "react-select";
+import { useWeather } from "../../context/WeatherContext";
+import { useWeatherData } from "../../services/useWeatherData";
 
-interface City {
-  name: string;
-  country: string;
-  lat: number;
-  lon: number;
+const SidebarContainer = styled.div<{ isCollapsed: boolean }>`
+  width: ${(props) => (props.isCollapsed ? "0px" : "300px")};
+  height: 100vh;
+  background: #2c3e50;
+  padding: ${(props) => (props.isCollapsed ? "0" : "10px")};
+
+  color: white;
+
+  /* position: absolute; */
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  z-index: 1000;
+`;
+
+const ToggleButton = styled.button`
+  position: absolute;
+  left: 300px;
+  top: 10px;
+  background: #34495e;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+`;
+
+const WeatherInfo = styled.div`
+  margin-top: 20px;
+`;
+
+interface CityOption {
+  label: string;
+  value: string;
+  coords: [number, number];
 }
-interface SidebarProps {
-  layers: { rain: boolean; clouds: boolean; temp: boolean; wind: boolean };
-  opacity: { rain: number; clouds: number; temp: number; wind: number };
-  toggleLayer: (layer: keyof SidebarProps["layers"]) => void;
-  updateOpacity: (layer: keyof SidebarProps["opacity"], value: number) => void;
-  setView: (lat: number, lon: number) => void;
-}
 
-const Sidebar = ({
-  layers,
-  opacity,
-  toggleLayer,
-  updateOpacity,
-}: SidebarProps) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<City[]>([]);
-  const [weather, setWeather] = useState<{
-    temp: number;
-    description: string;
-    icon: string;
-  } | null>(null);
-  const { selectedCity, setSelectedCity } = useCity();
+const cities: CityOption[] = [
+  { label: "Sydney, AU", value: "Sydney, AU", coords: [-33.8688, 151.2093] },
+  { label: "New York, US", value: "New York, US", coords: [40.7128, -74.006] },
+  { label: "London, GB", value: "London, GB", coords: [51.5074, -0.1278] },
+  { label: "Tokyo, JP", value: "Tokyo, JP", coords: [35.682839, 139.759455] },
+];
 
-  const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const Sidebar = () => {
+  const { city, setCity, unit, setUnit, setCoordinates } = useWeather();
+  const { data, error } = useWeatherData();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
-  useEffect(() => {
-    if (query.length > 2) {
-      const fetchCities = async () => {
-        try {
-          const res = await fetch(
-            `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
-          );
-          const data = await res.json();
-          setSuggestions(
-            data.map(
-              (city: {
-                name: string;
-                country: string;
-                lat: number;
-                lon: number;
-              }) => ({
-                name: city.name,
-                country: city.country,
-                lat: city.lat,
-                lon: city.lon,
-              })
-            )
-          );
-        } catch (error) {
-          console.error("Error fetching city suggestions:", error);
-        }
-      };
-      fetchCities();
-    } else {
-      setSuggestions([]);
+  const handleCityChange = (selected: CityOption | null) => {
+    if (selected) {
+      setCity(selected.value);
+      setCoordinates(selected.coords);
     }
-  }, [query, apiKey]);
-
-  useEffect(() => {
-    if (selectedCity) {
-      const fetchWeather = async () => {
-        try {
-          const res = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${selectedCity.lat}&lon=${selectedCity.lon}&units=metric&appid=${apiKey}`
-          );
-          const data = await res.json();
-          setWeather({
-            temp: data.main.temp,
-            description: data.weather[0].description,
-            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
-          });
-        } catch (error) {
-          console.error("Error fetching weather data:", error);
-        }
-      };
-      fetchWeather();
-    }
-  }, [selectedCity, apiKey]);
+  };
 
   return (
-    <SidebarWrapper $collapsed={collapsed}>
-      <ToggleButton onClick={() => setCollapsed(!collapsed)}>
-        {collapsed ? <FiChevronRight size={20} /> : <FiChevronLeft size={20} />}
+    <>
+      <SidebarContainer isCollapsed={isCollapsed}>
+        {!isCollapsed && (
+          <>
+            <Select
+              options={cities}
+              value={cities.find((c) => c.value === city)}
+              onChange={handleCityChange}
+              placeholder="Select a city..."
+              getOptionLabel={(e) => e.label}
+              getOptionValue={(e) => e.value}
+            />
+            <select
+              value={unit}
+              onChange={(e) => setUnit(e.target.value as "metric" | "imperial")}
+            >
+              <option value="metric">°C</option>
+              <option value="imperial">°F</option>
+            </select>
+            {error && <p>City not found</p>}
+            {data && (
+              <WeatherInfo>
+                <p>
+                  Temperature: {data.main.temp}°{unit === "metric" ? "C" : "F"}
+                </p>
+                <p>Humidity: {data.main.humidity}%</p>
+                <p>
+                  Wind Speed: {data.wind.speed}{" "}
+                  {unit === "metric" ? "m/s" : "mph"}
+                </p>
+                <p>{data.weather[0].description}</p>
+              </WeatherInfo>
+            )}
+          </>
+        )}
+      </SidebarContainer>
+      <ToggleButton onClick={() => setIsCollapsed(!isCollapsed)}>
+        {isCollapsed ? "☰" : "✖"}
       </ToggleButton>
-      <h2>Weather Layers</h2>
-      <SearchInput
-        type="text"
-        placeholder="Search city..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <SuggestionsList>
-        {suggestions.map((city) => (
-          <SuggestionItem
-            key={`${city.name}-${city.country}`}
-            onClick={() => setSelectedCity(city)}
-          >
-            {city.name}, {city.country}
-          </SuggestionItem>
-        ))}
-      </SuggestionsList>
-      {selectedCity && weather && (
-        <div>
-          <h3>{selectedCity.name}</h3>
-          <p>
-            {weather.temp}°C - {weather.description}
-          </p>
-          <img src={weather.icon} alt={weather.description} />
-        </div>
-      )}
-      {Object.keys(layers).map((layer) => (
-        <LayerControls key={layer}>
-          <label>
-            <input
-              type="checkbox"
-              checked={layers[layer as keyof typeof layers]}
-              onChange={() => toggleLayer(layer as keyof typeof layers)}
-            />
-            {layer.charAt(0).toUpperCase() + layer.slice(1)}
-          </label>
-          {layers[layer as keyof typeof layers] && (
-            <OpacitySlider
-              type="range"
-              min="0"
-              max="1"
-              step="0.1"
-              value={opacity[layer as keyof typeof opacity]}
-              onChange={(e) =>
-                updateOpacity(
-                  layer as keyof typeof opacity,
-                  parseFloat(e.target.value)
-                )
-              }
-            />
-          )}
-        </LayerControls>
-      ))}
-    </SidebarWrapper>
+    </>
   );
 };
 
