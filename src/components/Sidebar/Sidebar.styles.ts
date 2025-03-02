@@ -13,6 +13,7 @@ export const SidebarWrapper = styled.div<{ $collapsed: boolean }>`
   display: flex;
   flex-direction: column;
   z-index: 1000;
+  overflow-y: auto; // In case content overflows
 `;
 
 export const ToggleButton = styled.button`
@@ -29,4 +30,26 @@ export const ToggleButton = styled.button`
   align-items: center;
   justify-content: center;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+export const LayerControls = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+`;
+
+export const OpacitySlider = styled.input`
+  width: 80px;
+  cursor: pointer;
+  accent-color: #007bff;
 `;
