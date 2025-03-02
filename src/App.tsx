@@ -5,16 +5,24 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Map from "./components/Map/Map";
 import { CenteredGrid, Flex } from "./styles/Layout";
 
+import styled from "styled-components";
+
+export const AppContainer = styled.main`
+  padding: 2rem;
+`;
+
 function App() {
   return (
-    <WeatherProvider>
-      <CenteredGrid>
-        <Flex>
-          <Sidebar />
-          <Map />
-        </Flex>
-      </CenteredGrid>
-    </WeatherProvider>
+    <AppContainer>
+      <WeatherProvider>
+        <CenteredGrid fullScreen>
+          <Flex fullWidth>
+            <Sidebar />
+            <Map />
+          </Flex>
+        </CenteredGrid>
+      </WeatherProvider>
+    </AppContainer>
   );
 }
 
