@@ -79,6 +79,19 @@
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `gazjosef`, `weather-app`, `twitter_handle`, `gareth-h-a32448191`, `gmail`, `email`, `Weather App`, `project_description` -->
 
+### About The Project
+
+This interactive Weather Map is built with Vite, React, and TypeScript, providing real-time weather data for a selected location. The map is powered by the **OpenWeather API** and visualised using **React Leaflet**, offering an intuitive way to explore weather conditions.
+
+### Key Features
+
+- **Live Weather Data with React Query** – Efficiently fetches and caches weather data to ensure a smooth user experience.
+- **Context API for State Management** – Stores and manages weather details, making data accessible across the app.
+- **Interactive Map Interface** – Users can explore weather conditions by interacting with a dynamic map, including zoom and location selection.
+- **Styled with Styled-Components** – Provides a responsive and visually appealing UI.
+
+This project demonstrates the power of **React Query, Leaflet maps, and API integrations**, creating a seamless experience for accessing real-time weather information. 🌍☀️🌧
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
