@@ -6,12 +6,11 @@ import { format } from "date-fns";
 // Types
 interface HourlyWeather {
   dt: number;
-  temp: number;
-  icon: string;
+  main: { temp: number };
+  weather: { icon: string }[];
 }
 
 interface WeatherForecastProps {
-  hourlyData: HourlyWeather[];
   timezoneOffset: number; // Needed to adjust UTC time to local time
 }
 
@@ -45,29 +44,34 @@ const WeatherIcon = styled.img`
 `;
 
 const WeatherForecast: React.FC<WeatherForecastProps> = ({
-  hourlyData,
   timezoneOffset,
 }) => {
-  const { data, error } = useWeatherData();
+  const { forecast, data, error } = useWeatherData();
 
   // Check if there is weather data and handle error
   if (error) return <p>Forecast not found</p>;
-  if (!data) return <p>Loading...</p>;
+  if (!forecast) return <p>Loading...</p>;
 
-  const localTime = new Date((data.dt + timezoneOffset) * 1000);
-  const formattedTime = format(localTime, "h a"); // Converts to 12-hour format
+  // Get the first 5 hours from the forecast data
+  const nextFiveHours = forecast.list.slice(0, 5); // forecast.list contains hourly forecast data
+
   return (
     <ForecastContainer>
       {error && <p>Forecast not found</p>}
-      {hourlyData.map(({ dt, temp, icon }) => {
+      {nextFiveHours.map((hourData: HourlyWeather) => {
+        const localTime = new Date((hourData.dt + timezoneOffset) * 1000);
+        const formattedTime = format(localTime, "h a"); // Converts to 12-hour format
+        const icon = hourData.weather[0].icon; // Assuming there's always at least one weather condition per hour
+        const temp = Math.round(hourData.main.temp); // Accessing the temperature from main
+
         return (
-          <ForecastItem key={dt}>
+          <ForecastItem key={hourData.dt}>
             <span>{formattedTime}</span>
             <WeatherIcon
               src={`https://openweathermap.org/img/wn/${icon}.png`}
               alt="weather"
             />
-            <span>{Math.round(temp)}°C</span>
+            <span>{temp}°C</span>
           </ForecastItem>
         );
       })}
