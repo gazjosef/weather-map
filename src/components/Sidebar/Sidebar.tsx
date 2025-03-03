@@ -58,10 +58,6 @@ const Sidebar = () => {
     }
   };
 
-  if (error) {
-    console.log("Error", error);
-  }
-
   return (
     <>
       <SidebarContainer isCollapsed={isCollapsed}>
