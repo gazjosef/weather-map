@@ -4,20 +4,25 @@ import { WeatherProvider } from "./context/WeatherContext";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Map from "./components/Map/Map";
 import { CenteredGrid, Flex } from "./styles/Layout";
+import GlobalStyles from "./styles/GlobalStyles";
 
 import styled from "styled-components";
 
 export const AppContainer = styled.main`
-  /* padding: 2rem; */
-  width: 80vw;
+  width: 80rem;
+
+  border: 1px solid #000;
+  border-radius: 50px;
+  overflow: hidden;
 `;
 
 function App() {
   return (
     <WeatherProvider>
+      <GlobalStyles />
       <CenteredGrid fullScreen>
         <AppContainer>
-          <Flex fullWidth>
+          <Flex fullWidth height="80vh">
             <Sidebar />
             <Map />
           </Flex>

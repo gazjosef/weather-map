@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
     /* Box sizing rules & remove default margin/padding */
     *,
     *::after,
@@ -26,7 +28,7 @@ export const GlobalStyles = createGlobalStyle`
     background-color: #2f4f4f4f;
     background-color: #222222; /* Deep charcoal for a modern feel */
 
-
+    font-family: 'Inter', sans-serif;
 
     }
 

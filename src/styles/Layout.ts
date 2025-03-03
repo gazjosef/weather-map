@@ -18,6 +18,7 @@ export const Flex = styled.div<{
   flexDirection?: string;
   gap?: string;
   fullWidth?: boolean;
+  height?: string;
 }>`
   display: flex;
   justify-content: ${({ justifyContent }) => justifyContent || "flex-start"};
@@ -25,6 +26,7 @@ export const Flex = styled.div<{
   flex-direction: ${({ flexDirection }) => flexDirection || "row"};
   gap: ${({ gap }) => gap || "0"};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+  height: ${({ height }) => height || "auto"};
 `;
 
 export const FlexColumn = styled.div<{
@@ -32,6 +34,7 @@ export const FlexColumn = styled.div<{
   alignItems?: string;
   gap?: string;
   fullWidth?: boolean;
+  height?: string;
 }>`
   display: flex;
   flex-direction: column;
@@ -39,4 +42,5 @@ export const FlexColumn = styled.div<{
   align-items: ${({ alignItems }) => alignItems || "stretch"};
   gap: ${({ gap }) => gap || "0"};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+  height: ${({ height }) => height || "auto"};
 `;

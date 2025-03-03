@@ -3,12 +3,13 @@ import styled from "styled-components";
 import Select from "react-select";
 import { useWeather } from "../../context/WeatherContext";
 import { useWeatherData } from "../../services/useWeatherData";
+import WeatherForecast from "../Forecast/Forecast";
+import Info from "../Info/Info";
 
 const SidebarContainer = styled.div<{ isCollapsed: boolean }>`
-  width: ${(props) => (props.isCollapsed ? "0px" : "300px")};
-  height: 100vh;
+  width: ${(props) => (props.isCollapsed ? "0px" : "500px")};
   background: #2c3e50;
-  padding: ${(props) => (props.isCollapsed ? "0" : "10px")};
+  padding: ${(props) => (props.isCollapsed ? "0" : "20px")};
 
   color: white;
 
@@ -27,6 +28,7 @@ const ToggleButton = styled.button`
   border: none;
   padding: 10px;
   cursor: pointer;
+  z-index: 2000;
 `;
 
 const WeatherInfo = styled.div`
@@ -46,6 +48,12 @@ const cities: CityOption[] = [
   { label: "Tokyo, JP", value: "Tokyo, JP", coords: [35.682839, 139.759455] },
 ];
 
+const sampleData = [
+  { dt: 1740990000, temp: 22.5, icon: "04d" },
+  { dt: 1740993600, temp: 23.1, icon: "03d" },
+  { dt: 1740997200, temp: 24.0, icon: "01d" },
+];
+
 const Sidebar = () => {
   const { city, setCity, unit, setUnit, setCoordinates } = useWeather();
   const { data, error } = useWeatherData();
@@ -57,6 +65,8 @@ const Sidebar = () => {
       setCoordinates(selected.coords);
     }
   };
+
+  console.log("data", data);
 
   return (
     <>
@@ -78,19 +88,17 @@ const Sidebar = () => {
               <option value="metric">°C</option>
               <option value="imperial">°F</option>
             </select>
+
             {error && <p>City not found</p>}
 
             {data && (
               <WeatherInfo>
-                <p>
-                  Temperature: {data.main.temp}°{unit === "metric" ? "C" : "F"}
-                </p>
-                <p>Humidity: {data.main.humidity}%</p>
-                <p>
-                  Wind Speed: {data.wind.speed}{" "}
-                  {unit === "metric" ? "m/s" : "mph"}
-                </p>
-                <p>{data.weather[0].description}</p>
+                <Info />
+
+                <WeatherForecast
+                  hourlyData={sampleData}
+                  timezoneOffset={39600}
+                />
               </WeatherInfo>
             )}
           </>
