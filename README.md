@@ -79,8 +79,6 @@
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `gazjosef`, `weather-app`, `twitter_handle`, `gareth-h-a32448191`, `gmail`, `email`, `Weather App`, `project_description` -->
 
-### About The Project
-
 This interactive Weather Map is built with Vite, React, and TypeScript, providing real-time weather data for a selected location. The map is powered by the **OpenWeather API** and visualised using **React Leaflet**, offering an intuitive way to explore weather conditions.
 
 ### Key Features
@@ -99,7 +97,9 @@ This project demonstrates the power of **React Query, Leaflet maps, and API inte
 - [![Vite][Vite.com]][Vite-url]
 - [![TypeScript][TypeScript.com]][TypeScript-url]
 - [![React][React.js]][React-url]
-- [![TailwindCSS][TailwindCSS.com]][TailwindCSS-url]
+- ![React Query](https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white)
+- ![Context-API](https://img.shields.io/badge/Context--Api-000000?style=for-the-badge&logo=react)
+- ![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
 - [![Cypress][Cypress.com]][Cypress-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
