@@ -58,6 +58,10 @@ const Sidebar = () => {
     }
   };
 
+  if (error) {
+    console.log("Error", error);
+  }
+
   return (
     <>
       <SidebarContainer isCollapsed={isCollapsed}>
@@ -79,6 +83,7 @@ const Sidebar = () => {
               <option value="imperial">°F</option>
             </select>
             {error && <p>City not found</p>}
+
             {data && (
               <WeatherInfo>
                 <p>
