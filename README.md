@@ -79,14 +79,6 @@
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `gazjosef`, `weather-app`, `twitter_handle`, `gareth-h-a32448191`, `gmail`, `email`, `Weather App`, `project_description` -->
 
-This is a classic Blackjack game built with Vite, React, and TypeScript. The game is designed for a solo player against the dealer, following standard Blackjack rules with the option to double down.
-
-Key Features
-Custom Hook for Deck Management – A custom hook dynamically creates and shuffles the deck.
-Game State Management with Context API & Reducer – Uses the Context API with a reducer to handle game logic, including player and dealer hands, turn progression, and scoring.
-Styled with Styled-Components – The UI is built with styled-components, allowing for modular and theme-friendly styling.
-This project demonstrates the power of React hooks, reducers, and state management in creating an interactive and responsive game.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
