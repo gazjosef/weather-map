@@ -50,11 +50,13 @@ export const GlobalStyles = createGlobalStyle`
     h4,
     h5,
     h6 {
+    -webkit-text-wrap: balance;
     text-wrap: balance;
     }
 
     p {
     max-width: 70ch;
+    -webkit-text-wrap: pretty;
     text-wrap: pretty;
     }
 
@@ -68,6 +70,7 @@ export const GlobalStyles = createGlobalStyle`
 
     @media (prefers-reduced-motion: no-preference) {
     :has(:target) {
+        -webkit-scroll-behaviour: smooth;
         scroll-behaviour: smooth;
         scroll-padding-top: 3rem;
     }
