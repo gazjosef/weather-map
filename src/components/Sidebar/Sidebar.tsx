@@ -4,6 +4,7 @@ import styled from "styled-components";
 import SearchBar from "../SearchBar/SearchBar";
 import Info from "../Info/Info";
 import WeatherForecast from "../Forecast/Forecast";
+import { FlexColumn } from "../../styles/Layout";
 
 const SidebarContainer = styled.div<{ isCollapsed: boolean }>`
   width: ${(props) => (props.isCollapsed ? "0px" : "500px")};
@@ -37,11 +38,15 @@ const Sidebar = () => {
     <>
       <SidebarContainer isCollapsed={isCollapsed}>
         {!isCollapsed && (
-          <>
+          <FlexColumn
+            height="100%"
+            alignItems="center"
+            justifyContent="space-around"
+          >
             <SearchBar />
             <Info />
             <WeatherForecast />
-          </>
+          </FlexColumn>
         )}
       </SidebarContainer>
       <ToggleButton onClick={() => setIsCollapsed(!isCollapsed)}>
