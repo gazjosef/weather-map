@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-// import Select from "react-select";
-
-import WeatherForecast from "../Forecast/Forecast";
+// Components
+import SearchBar from "../SearchBar/SearchBar";
 import Info from "../Info/Info";
+import WeatherForecast from "../Forecast/Forecast";
 
 const SidebarContainer = styled.div<{ isCollapsed: boolean }>`
   width: ${(props) => (props.isCollapsed ? "0px" : "500px")};
@@ -33,36 +33,12 @@ const ToggleButton = styled.button`
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // const handleCityChange = (selected: CityOption | null) => {
-  //   if (selected) {
-  //     setCity(selected.value);
-  //     setCoordinates(selected.coords);
-  //   }
-  // };
-
-  // console.log("data", data);
-
   return (
     <>
       <SidebarContainer isCollapsed={isCollapsed}>
         {!isCollapsed && (
           <>
-            {/* <Select
-              options={cities}
-              value={cities.find((c) => c.value === city)}
-              onChange={handleCityChange}
-              placeholder="Select a city..."
-              getOptionLabel={(e) => e.label}
-              getOptionValue={(e) => e.value}
-            />
-            <select
-              value={unit}
-              onChange={(e) => setUnit(e.target.value as "metric" | "imperial")}
-            >
-              <option value="metric">°C</option>
-              <option value="imperial">°F</option>
-            </select> */}
-
+            <SearchBar />
             <Info />
             <WeatherForecast />
           </>

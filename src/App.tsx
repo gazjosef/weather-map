@@ -1,8 +1,6 @@
-// import "./App.css";
-// import { CityProvider } from "./context/CityContext";
-import { WeatherProvider } from "./context/WeatherContext";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Map from "./components/Map/Map";
+import { WeatherProvider } from "./context/WeatherContext";
 import { CenteredGrid, Flex } from "./styles/Layout";
 import GlobalStyles from "./styles/GlobalStyles";
 

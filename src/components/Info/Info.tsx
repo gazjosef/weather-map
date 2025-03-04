@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { useWeatherData } from "../../services/useWeatherData";
 import { useWeather } from "../../context/WeatherContext";
-import styled from "styled-components";
 import { FlexColumn } from "../../styles/Layout";
 
 const InfoTitle = styled.h2`
@@ -18,7 +18,6 @@ const InfoDescription = styled.div`
 
 const Info = () => {
   const { unit } = useWeather();
-
   const { currentWeather, currentError } = useWeatherData();
 
   return (
