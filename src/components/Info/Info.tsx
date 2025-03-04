@@ -19,26 +19,33 @@ const InfoDescription = styled.div`
 const Info = () => {
   const { unit } = useWeather();
 
-  const { data, error } = useWeatherData();
+  const { currentWeather, currentError } = useWeatherData();
+
   return (
     <FlexColumn alignItems="center" gap="2rem">
-      {error && <p>City not found</p>}
+      {currentError && <p>City not found</p>}
 
-      <InfoTitle>{data.name}</InfoTitle>
+      {currentWeather && (
+        <>
+          <InfoTitle>{currentWeather.name}</InfoTitle>
 
-      <InfoTemp>
-        {data.main.temp.toFixed(1)}°{unit === "metric" ? "C" : "F"}
-      </InfoTemp>
+          <InfoTemp>
+            {currentWeather.main.temp.toFixed(1)}°
+            {unit === "metric" ? "C" : "F"}
+          </InfoTemp>
 
-      <InfoDescription>
-        <p>{data.weather[0].description}</p>
-        <p>
-          Feels like{" "}
-          <strong>
-            {data.main.feels_like.toFixed(1)}°{unit === "metric" ? "C" : "F"}
-          </strong>
-        </p>
-      </InfoDescription>
+          <InfoDescription>
+            <p>{currentWeather.weather[0].description}</p>
+            <p>
+              Feels like{" "}
+              <strong>
+                {currentWeather.main.feels_like.toFixed(1)}°
+                {unit === "metric" ? "C" : "F"}
+              </strong>
+            </p>
+          </InfoDescription>
+        </>
+      )}
     </FlexColumn>
   );
 };

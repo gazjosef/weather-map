@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-interface WeatherContextType {
+export interface WeatherContextType {
   city: string;
   setCity: (city: string) => void;
   unit: "metric" | "imperial";
@@ -14,6 +14,7 @@ const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  // Default city is Sydney, Australia
   const [city, setCity] = useState("Sydney, AU");
   const [unit, setUnit] = useState<"metric" | "imperial">("metric");
   const [coordinates, setCoordinates] = useState<[number, number]>([

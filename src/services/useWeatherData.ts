@@ -1,14 +1,31 @@
 import { useQuery } from "@tanstack/react-query";
 import { useWeather } from "../context/WeatherContext";
 
+// Define TypeScript interface for weather data
+interface WeatherData {
+  name: string;
+  main: {
+    temp: number;
+    feels_like: number;
+  };
+  weather: { description: string }[];
+}
+
 // Fetch current weather data
-const fetchWeather = async (city: string, unit: "metric" | "imperial") => {
-  if (!city) return null;
+const fetchWeather = async (
+  city: string,
+  unit: "metric" | "imperial"
+): Promise<WeatherData> => {
+  if (!city) throw new Error("City not provided");
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
   const res = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`
   );
-  if (!res.ok) throw new Error("City not found");
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
   return res.json();
 };
 // Fetch forecast weather data (5-hour forecast)
@@ -21,7 +38,9 @@ const fetchWeatherForecast = async (
   const res = await fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${unit}`
   );
+
   if (!res.ok) throw new Error("City not found");
+
   return res.json();
 };
 
@@ -43,6 +62,7 @@ export const useWeatherData = () => {
   return {
     currentWeather: currentWeatherQuery.data,
     forecast: forecastQuery.data,
-    error: currentWeatherQuery.error || forecastQuery.error,
+    currentError: currentWeatherQuery.error,
+    forecastError: forecastQuery.error,
   };
 };
