@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import { useWeatherData } from "../../services/useWeatherData";
 import { format } from "date-fns";
@@ -10,9 +10,9 @@ interface HourlyWeather {
   weather: { icon: string }[];
 }
 
-interface WeatherForecastProps {
-  timezoneOffset: number; // Needed to adjust UTC time to local time
-}
+// interface WeatherForecastProps {
+//   timezoneOffset: number; // Needed to adjust UTC time to local time
+// }
 
 // Styled Components
 const ForecastContainer = styled.div`
@@ -43,13 +43,11 @@ const WeatherIcon = styled.img`
   height: 40px;
 `;
 
-const WeatherForecast: React.FC<WeatherForecastProps> = ({
-  timezoneOffset,
-}) => {
-  const { forecast, data, error } = useWeatherData();
+const WeatherForecast = () => {
+  const { forecast, forecastError } = useWeatherData();
 
   // Check if there is weather data and handle error
-  if (error) return <p>Forecast not found</p>;
+  if (forecastError) return <p>Forecast not found</p>;
   if (!forecast) return <p>Loading...</p>;
 
   // Get the first 5 hours from the forecast data
@@ -57,9 +55,9 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({
 
   return (
     <ForecastContainer>
-      {error && <p>Forecast not found</p>}
+      {forecastError && <p>Forecast not found</p>}
       {nextFiveHours.map((hourData: HourlyWeather) => {
-        const localTime = new Date((hourData.dt + timezoneOffset) * 1000);
+        const localTime = new Date(hourData.dt * 1000);
         const formattedTime = format(localTime, "h a"); // Converts to 12-hour format
         const icon = hourData.weather[0].icon; // Assuming there's always at least one weather condition per hour
         const temp = Math.round(hourData.main.temp); // Accessing the temperature from main
