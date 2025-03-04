@@ -1,14 +1,16 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useWeather } from "../../context/WeatherContext";
 import MapUpdater from "./MapUpdater";
+import { ToggleButton } from "../Button/ToggleBtn";
 
 const WeatherMap = () => {
   const { coordinates } = useWeather();
   const [activeOverlay, setActiveOverlay] = useState<
     "rain" | "clouds" | "temp" | null
   >(null);
+  // const [opacity, setOpacity] = useState(0.7);
 
   const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
     rain:
@@ -28,6 +30,10 @@ const WeatherMap = () => {
       zoom={10}
       style={{ height: "auto", width: "100%" }}
     >
+      <MapUpdater center={coordinates} />
+
+      <ToggleButton style={{ pointerEvents: "auto" }} />
+
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
@@ -36,7 +42,6 @@ const WeatherMap = () => {
         <Popup>Selected Location</Popup>
       </Marker>
 
-      <MapUpdater center={coordinates} />
       <OverlayControls
         setActiveOverlay={setActiveOverlay}
         activeOverlay={activeOverlay}

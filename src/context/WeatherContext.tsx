@@ -7,6 +7,8 @@ export interface WeatherContextType {
   setUnit: (unit: "metric" | "imperial") => void;
   coordinates: [number, number];
   setCoordinates: (coords: [number, number]) => void;
+  isCollapsed: boolean;
+  setIsCollapsed: (collapsed: boolean) => void;
 }
 
 const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
@@ -20,10 +22,20 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
   const [coordinates, setCoordinates] = useState<[number, number]>([
     -33.8688, 151.2093,
   ]); // Sydney default
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <WeatherContext.Provider
-      value={{ city, setCity, unit, setUnit, coordinates, setCoordinates }}
+      value={{
+        city,
+        setCity,
+        unit,
+        setUnit,
+        coordinates,
+        setCoordinates,
+        isCollapsed,
+        setIsCollapsed,
+      }}
     >
       {children}
     </WeatherContext.Provider>

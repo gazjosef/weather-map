@@ -1,5 +1,5 @@
-import { useState } from "react";
 import styled from "styled-components";
+import { useWeather } from "../../context/WeatherContext";
 // Components
 import SearchBar from "../SearchBar/SearchBar";
 import Info from "../Info/Info";
@@ -13,26 +13,14 @@ const SidebarContainer = styled.div<{ isCollapsed: boolean }>`
 
   color: white;
 
-  /* position: absolute; */
   transition: width 0.3s ease-in-out;
   overflow: hidden;
   z-index: 1000;
-`;
-
-const ToggleButton = styled.button`
-  position: absolute;
-  left: 300px;
-  top: 10px;
-  background: #34495e;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 2000;
+  position: relative;
 `;
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed } = useWeather();
 
   return (
     <>
@@ -49,9 +37,6 @@ const Sidebar = () => {
           </FlexColumn>
         )}
       </SidebarContainer>
-      <ToggleButton onClick={() => setIsCollapsed(!isCollapsed)}>
-        {isCollapsed ? "☰" : "✖"}
-      </ToggleButton>
     </>
   );
 };
