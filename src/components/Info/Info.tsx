@@ -17,16 +17,19 @@ const InfoDescription = styled.div`
 `;
 
 const Info = () => {
-  const { unit } = useWeather();
+  const { unit, countryCode } = useWeather();
   const { currentWeather, currentError } = useWeatherData();
 
+  console.log("currentWeather", currentWeather);
   return (
     <FlexColumn alignItems="center" gap="2rem">
       {currentError && <p>City not found</p>}
 
       {currentWeather && (
         <>
-          <InfoTitle>{currentWeather.name}</InfoTitle>
+          <InfoTitle>
+            {currentWeather.name}, {countryCode}
+          </InfoTitle>
 
           <InfoTemp>
             {currentWeather.main.temp.toFixed(1)}°

@@ -1,14 +1,15 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
+  useMap,
   // useMap
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useWeather } from "../../context/WeatherContext";
-import MapUpdater from "./MapUpdater";
+// import MapUpdater from "./MapUpdater";
 import { ToggleButton } from "../Button/ToggleBtn";
 
 const WeatherMap = () => {
@@ -17,23 +18,27 @@ const WeatherMap = () => {
     "rain" | "clouds" | "temp" | null
   >(null);
   // const [opacity, setOpacity] = useState(0.7);
+  console.log("Current Coordinates:", coordinates);
 
   const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
     rain:
       "https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY,
+      import.meta.env.VITE_OPENWEATHER_API_KEY +
+      "&palette=greyscale",
     clouds:
       "https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY,
+      import.meta.env.VITE_OPENWEATHER_API_KEY +
+      "&palette=greyscale",
     temp:
       "https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY,
+      import.meta.env.VITE_OPENWEATHER_API_KEY +
+      "&palette=greyscale",
   };
 
   return (
     <MapContainer
       center={coordinates}
-      zoom={11}
+      zoom={12}
       style={{ height: "auto", width: "100%" }}
     >
       <MapUpdater center={coordinates} />
@@ -41,6 +46,7 @@ const WeatherMap = () => {
       <ToggleButton style={{ pointerEvents: "auto" }} />
 
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      {/* <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" /> */}
 
       {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
 
@@ -99,6 +105,21 @@ const OverlayControls: React.FC<OverlayControlsProps> = ({
       ))}
     </div>
   );
+};
+interface MapUpdaterProps {
+  center: [number, number]; // Ensure this type matches your coordinates
+}
+
+const MapUpdater: React.FC<MapUpdaterProps> = ({ center }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (map) {
+      map.setView(center, map.getZoom(), { animate: true });
+    }
+  }, [center, map]);
+
+  return null; // ✅ This component only updates the map, nothing to render
 };
 
 export default WeatherMap;

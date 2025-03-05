@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useWeather } from "../../context/WeatherContext";
-import { FaSearch } from "react-icons/fa"; // Arrow icons
+import { FaSearch } from "react-icons/fa";
 import styled from "styled-components";
 
 const SearchContainer = styled.div`
@@ -32,7 +32,6 @@ const SearchButton = styled.button`
 `;
 
 const SuggestionsList = styled.ul`
-  color: black;
   position: absolute;
   top: 100%;
   left: 0;
@@ -45,6 +44,8 @@ const SuggestionsList = styled.ul`
   list-style: none;
   padding: 0;
   margin-top: 5px;
+  z-index: 10;
+  color: black;
 `;
 
 const SuggestionItem = styled.li`
@@ -55,37 +56,80 @@ const SuggestionItem = styled.li`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 10px;
+  font-size: 1.2rem;
+`;
+
+interface City {
+  name: string;
+  country: string;
+  coord: { lat: number; lon: number };
+}
+
+// Helper function to fetch city suggestions
+const fetchCitySuggestions = async (query: string) => {
+  const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  const res = await fetch(
+    `https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`
+  );
+  const data = await res.json();
+  return data.list || [];
+};
+
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState<{ name: string }[]>([]);
-  const { city, setCity, setCoordinates } = useWeather();
+  const [suggestions, setSuggestions] = useState<
+    { name: string; country: string; coord: { lat: number; lon: number } }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { setCity, setCoordinates } = useWeather();
 
-  // Debounce effect to delay API call
+  // Fetch city suggestions
   useEffect(() => {
-    if (!searchTerm.trim()) {
-      setSuggestions([]);
-      return;
-    }
+    const fetchSuggestions = async () => {
+      if (!searchTerm.trim()) {
+        setSuggestions([]);
+        return;
+      }
 
-    const timeoutId = setTimeout(async () => {
-      const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
-      const response = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${searchTerm}&limit=5&appid=${apiKey}`
-      );
-      const data = await response.json();
-      setSuggestions(data.map((city: any) => ({ name: city.name })));
-    }, 500); // Wait 500ms before searching
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await fetchCitySuggestions(searchTerm);
+        const filteredSuggestions = result.filter(
+          (city: City) => city.country && city.name // Filter out incomplete data
+        );
+        setSuggestions(filteredSuggestions);
+      } catch (err) {
+        console.log(err);
+        setError("Failed to fetch city suggestions.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Delay the fetch to improve performance (debounce)
+    const timeoutId = setTimeout(fetchSuggestions, 500);
 
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) return; // Prevent empty searches
-    setCity(searchTerm.trim()); // Update city in context
-    setSearchTerm(""); // Clear input after search
-    setSuggestions([]); // Clear suggestions after search
-  };
+  // Handle search
+  const handleSearch = async (city: string) => {
+    if (!city.trim()) return; // Prevent empty searches
 
+    // Find the city from suggestions
+    const selectedCity = suggestions.find((s) => s.name === city);
+    if (selectedCity) {
+      setCity(city); // Update city in context
+      setCoordinates([selectedCity.coord.lat, selectedCity.coord.lon]); // Update coordinates in context
+      setSearchTerm(""); // Clear input after search
+    }
+  };
   return (
     <SearchContainer>
       <SearchInput
@@ -96,24 +140,29 @@ const SearchBar = () => {
           setSearchTerm(e.target.value)
         }
       />
-      <SearchButton onClick={handleSearch}>
+      <SearchButton onClick={() => handleSearch(searchTerm)}>
         <FaSearch />
       </SearchButton>
+
+      {loading && searchTerm && <div>Loading suggestions...</div>}
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
       {suggestions.length > 0 && (
         <SuggestionsList>
-          {suggestions.map((suggestion, index) => (
+          {suggestions.map((suggestion) => (
             <SuggestionItem
-              key={index}
-              onClick={() => {
-                setCity(suggestion.name);
-                setSearchTerm("");
-                setSuggestions([]);
-              }}
+              key={suggestion.coord.lat + suggestion.coord.lon} // Unique key based on coordinates
+              onClick={() => handleSearch(suggestion.name)}
             >
-              {suggestion.name}
+              {suggestion.name}, {suggestion.country}
             </SuggestionItem>
           ))}
         </SuggestionsList>
+      )}
+
+      {suggestions.length === 0 && searchTerm && !loading && (
+        <div>No suggestions found.</div>
       )}
     </SearchContainer>
   );
