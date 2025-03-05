@@ -1,4 +1,6 @@
 @import "leaflet/dist/leaflet.css";
+/* src/styles/fonts.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
 
 .leaflet-container {
   height: 100vh;

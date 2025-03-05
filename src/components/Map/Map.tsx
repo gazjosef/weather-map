@@ -1,5 +1,11 @@
 import { useState, Dispatch, SetStateAction } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  // useMap
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useWeather } from "../../context/WeatherContext";
 import MapUpdater from "./MapUpdater";
@@ -27,7 +33,7 @@ const WeatherMap = () => {
   return (
     <MapContainer
       center={coordinates}
-      zoom={10}
+      zoom={11}
       style={{ height: "auto", width: "100%" }}
     >
       <MapUpdater center={coordinates} />

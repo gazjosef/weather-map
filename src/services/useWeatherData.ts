@@ -41,6 +41,8 @@ const fetchWeatherForecast = async (
 
   if (!res.ok) throw new Error("City not found");
 
+  // console.log(res.json());
+
   return res.json();
 };
 

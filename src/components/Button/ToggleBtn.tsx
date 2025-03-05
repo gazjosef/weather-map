@@ -1,7 +1,7 @@
 // import React from "react";
 import styled from "styled-components";
 import { useWeather } from "../../context/WeatherContext";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Arrow icons
+import { FaChevronLeft, FaBars } from "react-icons/fa";
 
 // export const ToggleButton = styled.button`
 export const ToggleButton = styled.button`
@@ -42,9 +42,11 @@ const ToggleBtn = () => {
   return (
     // <ToggleButton onClick={() => isPressed()}>
     // <ToggleButton onClick={() => setIsCollapsed(!isCollapsed)}>
-    //   <button>{isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}</button>
+    //   <button>{isCollapsed ? <FaButton /> : <FaChevronLeft />}</button>
     // </ToggleButton>
-    <button onClick={() => console.log("CLicked")}>Click Me</button>
+    <button onClick={() => console.log("CLicked")}>
+      {isCollapsed ? <FaBars /> : <FaChevronLeft />}
+    </button>
   );
 };
 export default ToggleBtn;

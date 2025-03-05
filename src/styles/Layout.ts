@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const CenteredGrid = styled.div<{
+export const CenteredGrid = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["fullScreen"].includes(prop), // Filter `fullWidth` prop
+})<{
   fullScreen?: boolean;
   height?: string;
   width?: string;
@@ -12,7 +14,10 @@ export const CenteredGrid = styled.div<{
   width: ${({ fullScreen, width }) => (fullScreen ? "100vw" : width || "auto")};
 `;
 
-export const Flex = styled.div<{
+export const Flex = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    !["fullWidth", "alignItems", "justifyContent"].includes(prop),
+})<{
   justifyContent?: string;
   alignItems?: string;
   flexDirection?: string;
@@ -29,7 +34,10 @@ export const Flex = styled.div<{
   height: ${({ height }) => height || "auto"};
 `;
 
-export const FlexColumn = styled.div<{
+export const FlexColumn = styled.div.withConfig({
+  shouldForwardProp: (prop) =>
+    !["justifyContent", "alignItems", "fullWidth"].includes(prop), // Filter `fullWidth` prop
+})<{
   justifyContent?: string;
   alignItems?: string;
   gap?: string;

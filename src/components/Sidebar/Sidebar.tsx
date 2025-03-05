@@ -6,7 +6,9 @@ import Info from "../Info/Info";
 import WeatherForecast from "../Forecast/Forecast";
 import { FlexColumn } from "../../styles/Layout";
 
-const SidebarContainer = styled.div<{ isCollapsed: boolean }>`
+const SidebarContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["isCollapsed"].includes(prop), // Filter `fullWidth` prop
+})<{ isCollapsed: boolean }>`
   width: ${(props) => (props.isCollapsed ? "0px" : "500px")};
   background: #2c3e50;
   padding: ${(props) => (props.isCollapsed ? "0" : "20px")};
