@@ -39,7 +39,12 @@ const WeatherMap = () => {
     <MapContainer
       center={coordinates}
       zoom={12}
-      style={{ height: "auto", width: "100%" }}
+      style={{
+        height: "auto",
+        width: "100%",
+        border: "10px solid #dcdcdc",
+        borderRadius: "50px",
+      }}
     >
       <MapUpdater center={coordinates} />
 
