@@ -39,8 +39,9 @@ const WeatherMap = () => {
       style={{
         height: "auto",
         width: "100%",
-        border: "10px solid #dcdcdc",
-        borderRadius: "50px",
+        border: "1px solid #dcdcdc",
+        borderTopLeftRadius: "50px",
+        borderBottomLeftRadius: "50px",
       }}
     >
       <ToggleButton style={{ pointerEvents: "auto" }} />
