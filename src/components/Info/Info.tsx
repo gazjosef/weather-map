@@ -17,9 +17,8 @@ const InfoTemp = styled.h1`
 
 const Info = () => {
   const { currentWeather } = useWeather();
-  console.log("currentWeather", currentWeather);
-
   // console.log("currentWeather", currentWeather);
+
   return (
     <FlexColumn alignItems="center" gap="2rem">
       {currentWeather && (

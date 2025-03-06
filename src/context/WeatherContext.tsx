@@ -97,12 +97,12 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
           setHourlyForecast(hourlyData);
 
           // Fetch Daily Forecast
-          const dailyRes = await fetch(
-            `https://api.openweathermap.org/data/2.5/onecall?q=${city},${countryCode}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`
-          );
-          const dailyData = await dailyRes.json();
-          setDailyForecast(dailyData.daily);
-          console.log("dailyData", dailyData);
+          // const dailyRes = await fetch(
+          //   `https://api.openweathermap.org/data/2.5/onecall?q=${city},${countryCode}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`
+          // );
+          // const dailyData = await dailyRes.json();
+          // setDailyForecast(dailyData.daily);
+          // console.log("dailyData", dailyData);
         } catch (error) {
           console.error("Error fetching weather data:", error);
         }
