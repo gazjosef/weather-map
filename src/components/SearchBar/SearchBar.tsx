@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useWeather } from "../../context/WeatherContext";
+import { useSearch } from "../../hooks/useSearch";
 import { FaSearch } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -65,71 +65,66 @@ const ErrorMessage = styled.div`
 interface City {
   name: string;
   country: string;
-  coord: { lat: number; lon: number };
+  lat: number;
+  lon: number;
 }
 
-// Helper function to fetch city suggestions
-const fetchCitySuggestions = async (query: string) => {
+// Fetch city suggestions from OpenWeather's Geocoding API
+const fetchCitySuggestions = async (query: string): Promise<City[]> => {
+  if (!query) return [];
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
   const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/find?q=${query}&type=like&appid=${apiKey}`
+    `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
   );
   const data = await res.json();
-  return data.list || [];
+  return data.map((city: City) => ({
+    name: city.name,
+    country: city.country,
+    lat: city.lat,
+    lon: city.lon,
+  }));
 };
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState<
-    { name: string; country: string; coord: { lat: number; lon: number } }[]
-  >([]);
+  const [suggestions, setSuggestions] = useState<City[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setCity, setCoordinates } = useWeather();
+  const { setCity, setCountryCode, setCoordinates } = useSearch();
 
-  // Fetch city suggestions
   useEffect(() => {
-    const fetchSuggestions = async () => {
-      if (!searchTerm.trim()) {
-        setSuggestions([]);
-        return;
-      }
+    if (!searchTerm.trim()) {
+      setSuggestions([]);
+      return;
+    }
 
+    const fetchSuggestions = async () => {
       setLoading(true);
       setError(null);
 
       try {
         const result = await fetchCitySuggestions(searchTerm);
-        const filteredSuggestions = result.filter(
-          (city: City) => city.country && city.name // Filter out incomplete data
-        );
-        setSuggestions(filteredSuggestions);
+        setSuggestions(result);
       } catch (err) {
-        console.log(err);
+        console.log("err", err);
         setError("Failed to fetch city suggestions.");
       } finally {
         setLoading(false);
       }
     };
 
-    // Delay the fetch to improve performance (debounce)
     const timeoutId = setTimeout(fetchSuggestions, 500);
-
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
-  // Handle search
-  const handleSearch = async (city: string) => {
-    if (!city.trim()) return; // Prevent empty searches
-
-    // Find the city from suggestions
-    const selectedCity = suggestions.find((s) => s.name === city);
-    if (selectedCity) {
-      setCity(city); // Update city in context
-      setCoordinates([selectedCity.coord.lat, selectedCity.coord.lon]); // Update coordinates in context
-      setSearchTerm(""); // Clear input after search
-    }
+  const handleSearch = (city: City) => {
+    setCity(city.name);
+    setCountryCode(city.country);
+    setCoordinates([city.lat, city.lon]);
+    setSearchTerm("");
+    setSuggestions([]);
   };
+
   return (
     <SearchContainer>
       <SearchInput
@@ -140,7 +135,10 @@ const SearchBar = () => {
           setSearchTerm(e.target.value)
         }
       />
-      <SearchButton onClick={() => handleSearch(searchTerm)}>
+      <SearchButton
+        disabled={!searchTerm.trim()}
+        // onClick={() => handleSearch(searchTerm)}
+      >
         <FaSearch />
       </SearchButton>
 
@@ -152,8 +150,8 @@ const SearchBar = () => {
         <SuggestionsList>
           {suggestions.map((suggestion) => (
             <SuggestionItem
-              key={suggestion.coord.lat + suggestion.coord.lon} // Unique key based on coordinates
-              onClick={() => handleSearch(suggestion.name)}
+              key={`${suggestion.lat},${suggestion.lon}`}
+              onClick={() => handleSearch(suggestion)}
             >
               {suggestion.name}, {suggestion.country}
             </SuggestionItem>

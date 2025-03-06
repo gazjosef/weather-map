@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useSearch } from "../hooks/useSearch";
 import { useWeather } from "../context/WeatherContext";
 
 // Define TypeScript interfaces for weather data and forecast
@@ -72,7 +73,8 @@ const fetchWeatherForecast = async (
 };
 
 export const useWeatherData = () => {
-  const { city, countryCode, unit } = useWeather();
+  const { city, countryCode } = useSearch();
+  const { unit } = useWeather();
 
   const currentWeatherQuery = useQuery({
     queryKey: ["currentWeather", city, countryCode, unit],
@@ -91,6 +93,8 @@ export const useWeatherData = () => {
   return {
     currentWeather: currentWeatherQuery.data,
     forecast: forecastQuery.data,
+    isWeatherLoading: currentWeatherQuery.isLoading,
+    isForecastLoading: forecastQuery.isLoading,
     currentError: currentWeatherQuery.error,
     forecastError: forecastQuery.error,
   };

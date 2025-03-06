@@ -9,6 +9,7 @@ import styled from "styled-components";
 export const AppContainer = styled.main`
   width: 80rem;
 
+  background: #2c3e50;
   border: 10px solid #dcdcdc;
   border-radius: 50px;
   overflow: hidden;
