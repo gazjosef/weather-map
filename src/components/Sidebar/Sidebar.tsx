@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useWeather } from "../../context/WeatherContext";
 // Components
 import SearchBar from "../SearchBar/SearchBar";
-import Info from "../Info/Info";
-import WeatherForecast from "../Forecast/Forecast";
+// import Info from "../Info/Info";
+// import WeatherForecast from "../Forecast/Forecast";
 import { FlexColumn } from "../../styles/Layout";
 
 const SidebarContainer = styled.div.withConfig({
@@ -34,8 +34,8 @@ const Sidebar = () => {
             justifyContent="space-around"
           >
             <SearchBar />
-            <Info />
-            <WeatherForecast />
+            {/* <Info />
+            <WeatherForecast /> */}
           </FlexColumn>
         )}
       </SidebarContainer>

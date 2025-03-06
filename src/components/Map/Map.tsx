@@ -8,12 +8,13 @@ import {
   // useMap
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { useWeather } from "../../context/WeatherContext";
+// import { useWeather } from "../../context/WeatherContext";
 // import MapUpdater from "./MapUpdater";
 import { ToggleButton } from "../Button/ToggleBtn";
+import { useSearch } from "../../hooks/useSearch";
 
 const WeatherMap = () => {
-  const { coordinates } = useWeather();
+  const { coordinates } = useSearch();
   const [activeOverlay, setActiveOverlay] = useState<
     "rain" | "clouds" | "temp" | null
   >(null);
