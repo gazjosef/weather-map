@@ -56,11 +56,11 @@ const SuggestionItem = styled.li`
   }
 `;
 
-const ErrorMessage = styled.div`
-  color: red;
-  margin-top: 10px;
-  font-size: 1.2rem;
-`;
+// const ErrorMessage = styled.div`
+//   color: red;
+//   margin-top: 10px;
+//   font-size: 1.2rem;
+// `;
 
 interface City {
   name: string;
@@ -77,6 +77,7 @@ const fetchCitySuggestions = async (query: string): Promise<City[]> => {
     `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
   );
   const data = await res.json();
+  console.log("data", data);
   return data.map((city: City) => ({
     name: city.name,
     country: city.country,
@@ -115,7 +116,7 @@ const SearchBar = () => {
       }
     };
 
-    const timeoutId = setTimeout(fetchSuggestions, 500);
+    const timeoutId = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(timeoutId);
   }, [searchTerm, loading]);
 
@@ -124,9 +125,14 @@ const SearchBar = () => {
     setCity(city.name);
     setCountryCode(city.country);
     setCoordinates([city.lat, city.lon]);
+
     setSearchTerm("");
     setSuggestions([]);
   };
+
+  if (error) {
+    console.error(error);
+  }
 
   return (
     <SearchContainer>
@@ -144,8 +150,6 @@ const SearchBar = () => {
       >
         <FaSearch />
       </SearchButton>
-
-      {error && <ErrorMessage>{error}</ErrorMessage>}
 
       {suggestions.length > 0 && (
         <SuggestionsList>

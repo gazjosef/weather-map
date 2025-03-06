@@ -1,9 +1,4 @@
-import {
-  useState,
-  Dispatch,
-  SetStateAction,
-  // useEffect
-} from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -14,7 +9,6 @@ import {
 import "leaflet/dist/leaflet.css";
 import MapUpdater from "./MapUpdater";
 import { ToggleButton } from "../Button/ToggleBtn";
-// import { useSearch } from "../../hooks/useSearch";
 import { useWeather } from "../../context/WeatherContext";
 
 const WeatherMap = () => {
@@ -22,7 +16,6 @@ const WeatherMap = () => {
   const [activeOverlay, setActiveOverlay] = useState<
     "rain" | "clouds" | "temp" | null
   >(null);
-  console.log("Current Coordinates:", coordinates);
 
   const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
     rain:

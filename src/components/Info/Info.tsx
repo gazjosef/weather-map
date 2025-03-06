@@ -1,16 +1,14 @@
 import styled from "styled-components";
-// import { useWeatherData } from "../../services/useWeatherData";
-// import { useWeather } from "../../context/WeatherContext";
-import { useSearch } from "../../hooks/useSearch";
+import { useWeather } from "../../context/WeatherContext";
 import { FlexColumn } from "../../styles/Layout";
 
 const InfoTitle = styled.h2`
   font-size: 2rem;
 `;
 
-// const InfoTemp = styled.h1`
-//   font-size: 4rem;
-// `;
+const InfoTemp = styled.h1`
+  font-size: 4rem;
+`;
 
 // const InfoDescription = styled.div`
 //   font-size: 1.6rem;
@@ -18,27 +16,24 @@ const InfoTitle = styled.h2`
 // `;
 
 const Info = () => {
-  // const { unit } = useWeather();
-  const { city, countryCode } = useSearch();
-  // const { currentWeather, city } = useWeatherData();
+  const { currentWeather } = useWeather();
+  console.log("currentWeather", currentWeather);
 
   // console.log("currentWeather", currentWeather);
   return (
     <FlexColumn alignItems="center" gap="2rem">
-      {city && <p>City not found</p>}
-
-      {city && (
+      {currentWeather && (
         <>
           <InfoTitle>
-            {city}, {countryCode}
+            {currentWeather.name}, {currentWeather.sys.country}
           </InfoTitle>
 
-          {/* <InfoTemp>
+          <InfoTemp>
             {currentWeather.main.temp.toFixed(1)}°
-            {unit === "metric" ? "C" : "F"}
+            {/* {unit === "metric" ? "C" : "F"} */}
           </InfoTemp>
 
-          <InfoDescription>
+          {/* <InfoDescription>
             <p>{currentWeather.weather[0].description}</p>
             <p>
               Feels like{" "}
