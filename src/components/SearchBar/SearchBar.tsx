@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearch } from "../../hooks/useSearch";
+import { useWeather } from "../../context/WeatherContext";
 import { FaSearch } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -90,7 +90,8 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState<City[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setCity, setCountryCode, setCoordinates } = useSearch();
+
+  const { setCity, setCountryCode, setCoordinates } = useWeather();
 
   useEffect(() => {
     if (!searchTerm.trim()) {
@@ -102,6 +103,7 @@ const SearchBar = () => {
       setLoading(true);
       setError(null);
 
+      console.log("loading", loading);
       try {
         const result = await fetchCitySuggestions(searchTerm);
         setSuggestions(result);
@@ -115,9 +117,10 @@ const SearchBar = () => {
 
     const timeoutId = setTimeout(fetchSuggestions, 500);
     return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
+  }, [searchTerm, loading]);
 
   const handleSearch = (city: City) => {
+    console.log("city", city);
     setCity(city.name);
     setCountryCode(city.country);
     setCoordinates([city.lat, city.lon]);
@@ -142,8 +145,6 @@ const SearchBar = () => {
         <FaSearch />
       </SearchButton>
 
-      {loading && searchTerm && <div>Loading suggestions...</div>}
-
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       {suggestions.length > 0 && (
@@ -157,10 +158,6 @@ const SearchBar = () => {
             </SuggestionItem>
           ))}
         </SuggestionsList>
-      )}
-
-      {suggestions.length === 0 && searchTerm && !loading && (
-        <div>No suggestions found.</div>
       )}
     </SearchContainer>
   );

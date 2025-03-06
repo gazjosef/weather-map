@@ -1,9 +1,10 @@
 import Sidebar from "./components/Sidebar/Sidebar";
 import Map from "./components/Map/Map";
 import { WeatherProvider } from "./context/WeatherContext";
+// import { useWeather } from "./hooks/useWeather";
 import { CenteredGrid, Flex } from "./styles/Layout";
 import GlobalStyles from "./styles/GlobalStyles";
-import { useCityCoordinates } from "./services/useCityCoordinates";
+// import { useCityCoordinates } from "./services/useCityCoordinates";
 import styled from "styled-components";
 
 export const AppContainer = styled.main`
@@ -21,7 +22,7 @@ export const AppContainer = styled.main`
 `;
 
 function App() {
-  useCityCoordinates();
+  // useCityCoordinates();
   return (
     <WeatherProvider>
       <GlobalStyles />

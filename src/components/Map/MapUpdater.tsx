@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
+// import { useSearch } from "../../hooks/useSearch";
 import { useWeather } from "../../context/WeatherContext";
 
 interface MapUpdaterProps {

@@ -1,24 +1,27 @@
-import { useState, Dispatch, SetStateAction, useEffect } from "react";
+import {
+  useState,
+  Dispatch,
+  SetStateAction,
+  // useEffect
+} from "react";
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
-  useMap,
   // useMap
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-// import { useWeather } from "../../context/WeatherContext";
-// import MapUpdater from "./MapUpdater";
+import MapUpdater from "./MapUpdater";
 import { ToggleButton } from "../Button/ToggleBtn";
-import { useSearch } from "../../hooks/useSearch";
+// import { useSearch } from "../../hooks/useSearch";
+import { useWeather } from "../../context/WeatherContext";
 
 const WeatherMap = () => {
-  const { coordinates } = useSearch();
+  const { coordinates } = useWeather();
   const [activeOverlay, setActiveOverlay] = useState<
     "rain" | "clouds" | "temp" | null
   >(null);
-  // const [opacity, setOpacity] = useState(0.7);
   console.log("Current Coordinates:", coordinates);
 
   const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
@@ -47,14 +50,14 @@ const WeatherMap = () => {
         borderRadius: "50px",
       }}
     >
+      <ToggleButton style={{ pointerEvents: "auto" }} />
+
       <MapUpdater center={coordinates} />
 
-      <ToggleButton style={{ pointerEvents: "auto" }} />
+      {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
 
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {/* <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" /> */}
-
-      {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
 
       <Marker position={coordinates}>
         <Popup>Selected Location</Popup>
@@ -111,21 +114,6 @@ const OverlayControls: React.FC<OverlayControlsProps> = ({
       ))}
     </div>
   );
-};
-interface MapUpdaterProps {
-  center: [number, number]; // Ensure this type matches your coordinates
-}
-
-const MapUpdater: React.FC<MapUpdaterProps> = ({ center }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (map) {
-      map.setView(center, map.getZoom(), { animate: true });
-    }
-  }, [center, map]);
-
-  return null; // ✅ This component only updates the map, nothing to render
 };
 
 export default WeatherMap;
