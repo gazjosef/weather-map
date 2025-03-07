@@ -36,9 +36,8 @@ const WeatherMap = () => {
       style={{
         height: "100%",
         width: "100%",
-        border: "5px solid #dcdcdc",
-        borderTopLeftRadius: "50px",
-        borderBottomLeftRadius: "50px",
+        border: "1rem solid #dcdcdc",
+        borderRadius: "2rem",
         overflow: "hidden",
         position: "relative",
       }}

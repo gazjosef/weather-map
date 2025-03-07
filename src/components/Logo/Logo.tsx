@@ -4,10 +4,14 @@ import { Flex } from "../../styles/Layout";
 
 // Styled image component
 export const LogoImage = styled.img`
-  width: 30px; // Adjust size as needed
+  width: 25px; // Adjust size as needed
   height: auto;
   display: block;
   margin: 0 auto;
+`;
+
+export const LogoTitle = styled.h1`
+  font-size: 2.5rem;
 `;
 
 const Logo = () => {

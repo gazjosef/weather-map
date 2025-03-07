@@ -9,8 +9,8 @@ export const AppContainer = styled.main`
   width: 100rem;
 
   background: #2c3e50;
-  border: 5px solid #dcdcdc;
-  border-radius: 50px;
+  border: 1px solid #dcdcdc;
+  border-radius: 20px;
   overflow: hidden;
 `;
 
