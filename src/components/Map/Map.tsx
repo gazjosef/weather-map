@@ -29,7 +29,6 @@ const WeatherMap = () => {
   };
 
   return (
-    // <MapWrapper>
     <MapContainer
       center={coordinates}
       zoom={10}
@@ -56,7 +55,6 @@ const WeatherMap = () => {
         activeOverlay={activeOverlay}
       />
     </MapContainer>
-    // </MapWrapper>
   );
 };
 
