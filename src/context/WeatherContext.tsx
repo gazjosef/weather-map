@@ -177,11 +177,8 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
           const forecastData = await forecastRes.json();
           setHourlyForecast(forecastData);
 
-          console.log("forecastData", forecastData);
           const dailySummaries = processDailyForecast(forecastData.list);
           setDailyForecast(dailySummaries);
-
-          console.log("dailySummaries", dailySummaries);
         } catch (error) {
           console.error("Error fetching weather data:", error);
         }

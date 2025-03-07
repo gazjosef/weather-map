@@ -8,7 +8,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MapUpdater from "./MapUpdater";
-import { ToggleButton } from "../Button/ToggleBtn";
+// import { ToggleButton } from "../Button/ToggleBtn";
 import { useWeather } from "../../context/WeatherContext";
 
 const WeatherMap = () => {
@@ -44,7 +44,7 @@ const WeatherMap = () => {
         borderBottomLeftRadius: "50px",
       }}
     >
-      <ToggleButton style={{ pointerEvents: "auto" }} />
+      {/* <ToggleButton style={{ pointerEvents: "auto" }} /> */}
 
       <MapUpdater center={coordinates} />
 

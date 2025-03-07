@@ -17,7 +17,7 @@ const InfoDescription = styled.div`
 
 const Info = () => {
   const { currentWeather } = useWeather();
-  // console.log("currentWeather", currentWeather);
+  console.log("INFO: ", currentWeather);
 
   return (
     <FlexColumn alignItems="center" gap="2rem">

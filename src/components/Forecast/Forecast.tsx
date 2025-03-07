@@ -67,8 +67,8 @@ const WeatherForecast = () => {
   // Get the first 5 hours from the forecast data
   const nextFiveHours = hourlyForecast.list.slice(0, 5); // forecast.list contains hourly forecast data
 
-  console.log("hourlyForecast Data:", hourlyForecast);
-  console.log("nextFiveHours Data:", nextFiveHours);
+  console.log("HOURLY:", hourlyForecast);
+  console.log("NEXT FIVE LIST:", nextFiveHours);
   return (
     <ForecastContainer>
       {nextFiveHours.map((hourData) => {
