@@ -8,16 +8,15 @@ export const DailyForecastContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 
   color: white;
 `;
 
 export const ForecastItem = styled.div`
-  background: rgba(255, 255, 255, 0.1);
+  /* background: rgba(255, 255, 255, 0.1); */
   border-radius: 0.8rem;
-  padding: 0.75rem;
-  /* width: 100%; */
+  padding: 0 0.75rem;
 
   display: flex;
   justify-content: space-between;

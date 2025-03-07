@@ -9,8 +9,6 @@ import {
 const DailyForecast = () => {
   const { dailyForecast } = useWeather();
 
-  console.log("DAILY: ", dailyForecast);
-
   return (
     <DailyForecastContainer>
       {dailyForecast?.map((day, index) => (

@@ -4,7 +4,6 @@ import { InfoBox, InfoDescription, InfoTemp, InfoTitle } from "./Info.styles";
 
 const Info = () => {
   const { currentWeather } = useWeather();
-  console.log("INFO: ", currentWeather);
 
   return (
     <InfoBox>

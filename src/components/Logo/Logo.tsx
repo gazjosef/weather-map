@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../../../public/favicon_io/android-chrome-512x512.png";
+import logo from "../../assets/android-chrome-512x512.png";
 import { Flex } from "../../styles/Layout";
 
 // Styled image component

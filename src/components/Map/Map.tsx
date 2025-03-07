@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { useWeather } from "../../context/WeatherContext";
 import ToggleButton from "../Button/ToggleBtn";
 import Info from "../Info/Info";
+import MapClickHandler from "./MapClickHandler";
 import MapUpdater from "./MapUpdater";
 
 const WeatherMap = () => {
@@ -16,16 +17,13 @@ const WeatherMap = () => {
   const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
     rain:
       "https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY +
-      "&palette=greyscale",
+      import.meta.env.VITE_OPENWEATHER_API_KEY,
     clouds:
       "https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY +
-      "&palette=greyscale",
+      import.meta.env.VITE_OPENWEATHER_API_KEY,
     temp:
       "https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY +
-      "&palette=greyscale",
+      import.meta.env.VITE_OPENWEATHER_API_KEY,
   };
 
   return (
@@ -43,10 +41,22 @@ const WeatherMap = () => {
     >
       <ToggleButton />
       <Info />
+      <MapClickHandler />
       <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
-      {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      {activeOverlay && (
+        <TileLayer
+          url={weatherLayers[activeOverlay]}
+          opacity={0.7}
+          zIndex={500}
+        />
+      )}
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        opacity={0.8}
+      />
       {/* <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" /> */}
+      {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" /> */}
+
       <Marker position={coordinates}>
         <Popup>Selected Location</Popup>
       </Marker>
@@ -73,10 +83,11 @@ const OverlayControls: React.FC<OverlayControlsProps> = ({
         position: "absolute",
         top: 10,
         right: 10,
-        zIndex: 1000,
+        zIndex: 2000,
         background: "rgba(0,0,0,0.6)",
         padding: "5px",
         borderRadius: "5px",
+        pointerEvents: "auto",
       }}
     >
       {[

@@ -59,27 +59,23 @@ const WeatherForecast = () => {
     hourlyForecast: HourlyForecastResponse | null;
   };
 
-  // Check if hourlyForecast is available
   if (!hourlyForecast) {
-    return <p>Loading...</p>; // Or display an error message
+    return <p>Loading...</p>;
   }
 
-  // Get the first 5 hours from the forecast data
-  const nextFiveHours = hourlyForecast.list.slice(0, 5); // forecast.list contains hourly forecast data
+  const nextFiveHours = hourlyForecast.list.slice(0, 5);
 
-  console.log("HOURLY:", hourlyForecast);
-  console.log("NEXT FIVE LIST:", nextFiveHours);
   return (
     <ForecastContainer>
-      {nextFiveHours.map((hourData) => {
+      {nextFiveHours.map((hourData, index) => {
         const localTime = new Date(hourData.dt * 1000);
-        const formattedTime = format(localTime, "h a"); // Converts to 12-hour format
+        const formattedTime = format(localTime, "h a");
         const icon = hourData.weather[0].icon; // Assuming there's always at least one weather condition per hour
-        const temp = Math.round(hourData.main.temp); // Accessing the temperature from main
+        const temp = Math.round(hourData.main.temp);
 
         return (
           <ForecastItem key={hourData.dt}>
-            <span>{formattedTime}</span>
+            <span>{index === 0 ? "NOW" : formattedTime}</span>
             <WeatherIcon
               src={`https://openweathermap.org/img/wn/${icon}.png`}
               alt="weather"

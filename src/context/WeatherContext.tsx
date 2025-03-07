@@ -208,7 +208,39 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
 
       fetchWeatherData();
     }
-  }, [city, countryCode, coordinates]);
+  }, [city, countryCode]);
+
+  useEffect(() => {
+    if (coordinates) {
+      const fetchWeatherByCoords = async () => {
+        try {
+          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+          const [lat, lon] = coordinates;
+
+          // Fetch Current Weather by lat/lon
+          const weatherRes = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+          );
+          const weatherData = await weatherRes.json();
+          setCurrentWeather(weatherData);
+
+          // Fetch Hourly & Daily Forecast by lat/lon
+          const forecastRes = await fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+          );
+          const forecastData = await forecastRes.json();
+          setHourlyForecast(forecastData);
+
+          const dailySummaries = processDailyForecast(forecastData.list);
+          setDailyForecast(dailySummaries);
+        } catch (error) {
+          console.error("Error fetching weather by coordinates:", error);
+        }
+      };
+
+      fetchWeatherByCoords();
+    }
+  }, [coordinates]); // ✅ Runs only when coordinates change
 
   return (
     <WeatherContext.Provider
