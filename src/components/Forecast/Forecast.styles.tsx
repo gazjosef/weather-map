@@ -1,13 +1,16 @@
 import styled from "styled-components";
 
 export const ForecastContainer = styled.div`
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  padding: 1rem;
   background-color: #222;
+  padding: 1rem;
   border-radius: 8px;
+
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+
   color: white;
+
   &::-webkit-scrollbar {
     display: none;
   }

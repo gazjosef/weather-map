@@ -9,7 +9,7 @@ export const AppContainer = styled.main`
   width: 100rem;
 
   background: #2c3e50;
-  border: 10px solid #dcdcdc;
+  border: 5px solid #dcdcdc;
   border-radius: 50px;
   overflow: hidden;
 `;

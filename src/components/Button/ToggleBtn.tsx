@@ -1,20 +1,20 @@
 import { useWeather } from "../../context/WeatherContext";
 import { FaChevronLeft, FaBars } from "react-icons/fa";
+import { ToggleButton } from "./ToggleBtn.styles";
 
 const ToggleBtn = () => {
-  const { isCollapsed, setIsCollapsed } = useWeather();
+  const { isCollapsed, toggleCollapsed } = useWeather();
 
   // Logging values for debugging
   console.log("isCollapsed:", isCollapsed);
-  console.log("setIsCollapsed:", setIsCollapsed);
   return (
     // <ToggleButton onClick={() => isPressed()}>
-    // <ToggleButton onClick={() => setIsCollapsed(!isCollapsed)}>
-    //   <button>{isCollapsed ? <FaButton /> : <FaChevronLeft />}</button>
-    // </ToggleButton>
-    <button onClick={() => console.log("CLicked")}>
-      {isCollapsed ? <FaBars /> : <FaChevronLeft />}
-    </button>
+    <ToggleButton onClick={() => toggleCollapsed()}>
+      <button>{isCollapsed ? <FaBars /> : <FaChevronLeft />}</button>
+    </ToggleButton>
+    // <button onClick={() => console.log("CLicked")}>
+    //   {isCollapsed ? <FaBars /> : <FaChevronLeft />}
+    // </button>
   );
 };
 export default ToggleBtn;

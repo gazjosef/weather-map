@@ -3,25 +3,25 @@ import styled from "styled-components";
 export const SearchContainer = styled.div`
   position: relative;
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
 `;
 
 export const SearchInput = styled.input`
   flex: 1;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
   font-size: 1.6rem;
 `;
 
 export const SearchButton = styled.button`
+  cursor: pointer;
+  background: #3498db;
   padding: 10px 15px;
   border: none;
-  background: #3498db;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
   color: white;
-  border-radius: 5px;
-  cursor: pointer;
 
   &:hover {
     background: #2980b9;

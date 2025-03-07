@@ -1,18 +1,14 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  // useMap
-} from "react-leaflet";
+import React, { useState, Dispatch, SetStateAction } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import MapUpdater from "./MapUpdater";
-// import { ToggleButton } from "../Button/ToggleBtn";
+
 import { useWeather } from "../../context/WeatherContext";
+import ToggleButton from "../Button/ToggleBtn";
+import Info from "../Info/Info";
+import MapUpdater from "./MapUpdater";
 
 const WeatherMap = () => {
-  const { coordinates } = useWeather();
+  const { coordinates, isCollapsed } = useWeather();
   const [activeOverlay, setActiveOverlay] = useState<
     "rain" | "clouds" | "temp" | null
   >(null);
@@ -33,35 +29,35 @@ const WeatherMap = () => {
   };
 
   return (
+    // <MapWrapper>
     <MapContainer
       center={coordinates}
-      zoom={12}
+      zoom={10}
       style={{
-        height: "auto",
+        height: "100%",
         width: "100%",
-        border: "1px solid #dcdcdc",
+        border: "5px solid #dcdcdc",
         borderTopLeftRadius: "50px",
         borderBottomLeftRadius: "50px",
+        overflow: "hidden",
+        position: "relative",
       }}
     >
-      {/* <ToggleButton style={{ pointerEvents: "auto" }} /> */}
-
-      <MapUpdater center={coordinates} />
-
+      <ToggleButton />
+      <Info />
+      <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
       {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
-
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {/* <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" /> */}
-
       <Marker position={coordinates}>
         <Popup>Selected Location</Popup>
       </Marker>
-
       <OverlayControls
         setActiveOverlay={setActiveOverlay}
         activeOverlay={activeOverlay}
       />
     </MapContainer>
+    // </MapWrapper>
   );
 };
 

@@ -19,6 +19,31 @@ export interface WeatherData {
   };
 }
 
+interface ForecastItem {
+  dt: number;
+  main: {
+    temp: number;
+    feels_like?: number;
+    temp_min?: number;
+    temp_max?: number;
+    pressure?: number;
+    humidity?: number;
+    temp_kf?: number;
+  };
+  weather: {
+    id?: number;
+    main?: string;
+    description: string;
+    icon: string;
+  }[];
+  wind: {
+    speed: number;
+    deg?: number;
+    gust?: number;
+  };
+  dt_txt?: string;
+}
+
 // HourlyForecast interface for hourly weather forecast
 export interface HourlyForecast {
   dt: number; // timestamp of the forecast
@@ -50,62 +75,53 @@ export interface WeatherContextType {
   setCountryCode: (countryCode: string) => void;
   coordinates: [number, number];
   setCoordinates: (coords: [number, number]) => void;
+  unit: "metric" | "imperial";
+  setUnit: (unit: "metric" | "imperial") => void;
+  isCollapsed: boolean;
+  setIsCollapsed: (isCollapsed: boolean) => void;
+  toggleCollapsed: () => void;
 }
 
 const processDailyForecast = (
-  forecastList: {
-    dt: number;
-    main: { temp: number };
-    wind: { speed: number };
-    weather: { description: string; icon: string }[];
-  }[]
+  forecastList: ForecastItem[]
 ): DailyForecast[] => {
-  const dailyMap = new Map<
-    number,
-    {
-      temps: number[];
-      windSpeeds: number[];
-      descriptions: string[];
-      icons: string[];
+  const dailyMap = new Map();
+
+  const todaysDate = new Date();
+  // (for proper handling, consider using a library like date-fns-tz)
+  const currentDateTimestamp = todaysDate.setHours(0, 0, 0, 0);
+
+  forecastList.forEach((entry) => {
+    const date = new Date(entry.dt * 1000).setHours(0, 0, 0, 0);
+    // Include entries from today forward
+    if (date >= currentDateTimestamp) {
+      if (!dailyMap.has(date)) {
+        dailyMap.set(date, {
+          temps: [],
+          windSpeeds: [],
+          descriptions: [],
+          icons: [],
+        });
+      }
+      const dayData = dailyMap.get(date);
+      dayData.temps.push(entry.main.temp);
+      dayData.windSpeeds.push(entry.wind.speed);
+      dayData.descriptions.push(entry.weather[0].description);
+      dayData.icons.push(entry.weather[0].icon);
     }
-  >();
-
-  const currentDate = new Date().setHours(0, 0, 0, 0);
-
-  // Filter out the current day from the forecast list
-  const filteredForecastList = forecastList.filter(
-    (entry) => new Date(entry.dt * 1000).setHours(0, 0, 0, 0) > currentDate
-  );
-
-  filteredForecastList.forEach((entry) => {
-    const date = new Date(entry.dt * 1000).setHours(0, 0, 0, 0); // Normalize to day start
-    if (!dailyMap.has(date)) {
-      dailyMap.set(date, {
-        temps: [],
-        windSpeeds: [],
-        descriptions: [],
-        icons: [],
-      });
-    }
-
-    const dayData = dailyMap.get(date)!;
-    dayData.temps.push(entry.main.temp);
-    dayData.windSpeeds.push(entry.wind.speed);
-    dayData.descriptions.push(entry.weather[0].description);
-    dayData.icons.push(entry.weather[0].icon);
   });
 
-  // Sort the entries by date in ascending order (earliest to latest)
-  const sortedForecast = Array.from(dailyMap.entries()).sort(
-    ([dtA], [dtB]) => dtA - dtB
-  );
+  // Sort by date ascending (earliest to latest)
+  const sortedForecast = Array.from(dailyMap.entries())
+    .sort(([dtA], [dtB]) => dtA - dtB)
+    .slice(0, 5); // Get next 5 days (including today if available)
 
-  // Ensure you only return the first 5 days of forecast data
-  return sortedForecast.slice(0, 5).map(([dt, data]) => ({
-    dt,
+  // Map to return format
+  return sortedForecast.map(([dt, data]) => ({
+    dt: dt / 1000, // Convert back to seconds for your UI
     temp: {
-      day: Math.max(...data.temps), // Use max temp for the day
-      night: Math.min(...data.temps), // Use min temp for night estimate
+      day: Math.max(...data.temps),
+      night: Math.min(...data.temps),
     },
     weather: [
       {
@@ -153,8 +169,13 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
     null
   );
 
-  // const [unit, setUnit] = useState<"metric" | "imperial">("metric");
-  // const [isCollapsed, setIsCollapsed] = useState(false);
+  const [unit, setUnit] = useState<"metric" | "imperial">("metric");
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Toggle collapsed state
+  const toggleCollapsed = () => {
+    setIsCollapsed((prev) => !prev);
+  };
 
   // Fetch weather data based on city and country code
   useEffect(() => {
@@ -178,6 +199,7 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
           setHourlyForecast(forecastData);
 
           const dailySummaries = processDailyForecast(forecastData.list);
+          console.log("dailySummaries", forecastData.list);
           setDailyForecast(dailySummaries);
         } catch (error) {
           console.error("Error fetching weather data:", error);
@@ -198,6 +220,11 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
         setCity,
         setCountryCode,
         setCoordinates,
+        unit,
+        setUnit,
+        isCollapsed,
+        setIsCollapsed,
+        toggleCollapsed,
       }}
     >
       {children}

@@ -13,9 +13,11 @@ const DailyForecast = () => {
 
   return (
     <DailyForecastContainer>
-      {dailyForecast?.map((day) => (
+      {dailyForecast?.map((day, index) => (
         <ForecastItem key={day.dt}>
-          <span>{format(new Date(day.dt * 1000), "EEEE")}</span>
+          <span>
+            {index === 0 ? "Today" : format(new Date(day.dt * 1000), "EEEE")}
+          </span>
           <WeatherIcon
             src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
             alt={day.weather[0].description}
