@@ -4,6 +4,7 @@ import styled from "styled-components";
 import SearchBar from "../SearchBar/SearchBar";
 import Info from "../Info/Info";
 import WeatherForecast from "../Forecast/Forecast";
+import Daily from "../Daily/Daily";
 import { FlexColumn } from "../../styles/Layout";
 
 const SidebarContainer = styled.div.withConfig({
@@ -38,6 +39,7 @@ const Sidebar = () => {
             <SearchBar />
             <Info />
             <WeatherForecast />
+            <Daily />
           </FlexColumn>
         )}
       </SidebarContainer>

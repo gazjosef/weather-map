@@ -9,7 +9,7 @@ export interface WeatherData {
     humidity: number;
     pressure: number;
   };
-  weather: { description: string }[];
+  weather: { description: string; icon: string }[];
   wind: {
     speed: number;
     deg: number;
@@ -36,7 +36,7 @@ export interface DailyForecast {
     day: number;
     night: number;
   };
-  weather: { description: string }[];
+  weather: { description: string; icon: string }[];
   wind: {
     speed: number;
   };
@@ -51,6 +51,74 @@ export interface WeatherContextType {
   coordinates: [number, number];
   setCoordinates: (coords: [number, number]) => void;
 }
+
+const processDailyForecast = (
+  forecastList: {
+    dt: number;
+    main: { temp: number };
+    wind: { speed: number };
+    weather: { description: string; icon: string }[];
+  }[]
+): DailyForecast[] => {
+  const dailyMap = new Map<
+    number,
+    {
+      temps: number[];
+      windSpeeds: number[];
+      descriptions: string[];
+      icons: string[];
+    }
+  >();
+
+  forecastList.forEach((entry) => {
+    const date = new Date(entry.dt * 1000).setHours(0, 0, 0, 0); // Normalize to day start
+    if (!dailyMap.has(date)) {
+      dailyMap.set(date, {
+        temps: [],
+        windSpeeds: [],
+        descriptions: [],
+        icons: [],
+      });
+    }
+
+    const dayData = dailyMap.get(date)!;
+    dayData.temps.push(entry.main.temp);
+    dayData.windSpeeds.push(entry.wind.speed);
+    dayData.descriptions.push(entry.weather[0].description);
+    dayData.icons.push(entry.weather[0].icon);
+  });
+
+  return Array.from(dailyMap.entries()).map(([dt, data]) => ({
+    dt,
+    temp: {
+      day: Math.max(...data.temps), // Use max temp for the day
+      night: Math.min(...data.temps), // Use min temp for night estimate
+    },
+    weather: [
+      {
+        description: mostFrequent(data.descriptions),
+        icon: mostFrequent(data.icons),
+      },
+    ],
+    wind: {
+      speed: average(data.windSpeeds),
+    },
+  }));
+};
+
+// Helper function: Find most frequent weather description
+const mostFrequent = (arr: string[]) => {
+  return arr
+    .sort(
+      (a, b) =>
+        arr.filter((v) => v === a).length - arr.filter((v) => v === b).length
+    )
+    .pop()!;
+};
+
+// Helper function: Calculate average
+const average = (arr: number[]) =>
+  arr.reduce((sum, val) => sum + val, 0) / arr.length;
 
 const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 
@@ -89,20 +157,18 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
           const weatherData = await weatherRes.json();
           setCurrentWeather(weatherData);
 
-          // Fetch Hourly Forecast
-          const hourlyRes = await fetch(
+          // Fetch Hourly Forecast + Daily Forecast
+          const forecastRes = await fetch(
             `https://api.openweathermap.org/data/2.5/forecast?q=${city},${countryCode}&units=metric&appid=${apiKey}`
           );
-          const hourlyData = await hourlyRes.json();
-          setHourlyForecast(hourlyData);
+          const forecastData = await forecastRes.json();
+          setHourlyForecast(forecastData);
 
-          // Fetch Daily Forecast
-          // const dailyRes = await fetch(
-          //   `https://api.openweathermap.org/data/2.5/onecall?q=${city},${countryCode}&exclude=current,minutely,hourly,alerts&units=metric&appid=${apiKey}`
-          // );
-          // const dailyData = await dailyRes.json();
-          // setDailyForecast(dailyData.daily);
-          // console.log("dailyData", dailyData);
+          console.log("forecastData", forecastData);
+          const dailySummaries = processDailyForecast(forecastData.list);
+          setDailyForecast(dailySummaries);
+
+          console.log("dailySummaries", dailySummaries);
         } catch (error) {
           console.error("Error fetching weather data:", error);
         }
