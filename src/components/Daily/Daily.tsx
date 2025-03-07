@@ -1,34 +1,15 @@
-import styled from "styled-components";
 import { useWeather } from "../../context/WeatherContext";
 import { format } from "date-fns";
-
-// Styled Components
-const DailyForecastContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: #222;
-  border-radius: 8px;
-  color: white;
-`;
-
-const ForecastItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.8rem;
-`;
-
-const WeatherIcon = styled.img`
-  width: 40px;
-  height: 40px;
-`;
+import {
+  DailyForecastContainer,
+  ForecastItem,
+  WeatherIcon,
+} from "./Daily.styles";
 
 const DailyForecast = () => {
   const { dailyForecast } = useWeather();
+
+  console.log("DAILY: ", dailyForecast);
 
   return (
     <DailyForecastContainer>

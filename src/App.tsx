@@ -1,28 +1,20 @@
+import styled from "styled-components";
+import GlobalStyles from "./styles/GlobalStyles";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Map from "./components/Map/Map";
 import { WeatherProvider } from "./context/WeatherContext";
-// import { useWeather } from "./hooks/useWeather";
 import { CenteredGrid, Flex } from "./styles/Layout";
-import GlobalStyles from "./styles/GlobalStyles";
-// import { useCityCoordinates } from "./services/useCityCoordinates";
-import styled from "styled-components";
 
 export const AppContainer = styled.main`
-  width: 80rem;
+  width: 100rem;
 
   background: #2c3e50;
   border: 10px solid #dcdcdc;
   border-radius: 50px;
   overflow: hidden;
-  /* Adds a subtle inner shadow for a recessed look */
-
-  /* Gradient border effect */
-  /* background: linear-gradient(to bottom, #f0f0f0, #dcdcdc); */
-  /* border-image: linear-gradient(to bottom, #ffffff, #dcdcdc) 1; */
 `;
 
 function App() {
-  // useCityCoordinates();
   return (
     <WeatherProvider>
       <GlobalStyles />

@@ -1,66 +1,13 @@
 import { useState, useEffect } from "react";
 import { useWeather } from "../../context/WeatherContext";
 import { FaSearch } from "react-icons/fa";
-import styled from "styled-components";
-
-const SearchContainer = styled.div`
-  position: relative;
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
-
-const SearchInput = styled.input`
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1.6rem;
-`;
-
-const SearchButton = styled.button`
-  padding: 10px 15px;
-  border: none;
-  background: #3498db;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background: #2980b9;
-  }
-`;
-
-const SuggestionsList = styled.ul`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-  margin-top: 5px;
-  z-index: 10;
-  color: black;
-`;
-
-const SuggestionItem = styled.li`
-  padding: 10px;
-  cursor: pointer;
-  &:hover {
-    background: #f0f0f0;
-  }
-`;
-
-// const ErrorMessage = styled.div`
-//   color: red;
-//   margin-top: 10px;
-//   font-size: 1.2rem;
-// `;
+import {
+  SearchButton,
+  SearchContainer,
+  SearchInput,
+  SuggestionItem,
+  SuggestionsList,
+} from "./SearchBar.styles";
 
 interface City {
   name: string;
@@ -144,10 +91,7 @@ const SearchBar = () => {
           setSearchTerm(e.target.value)
         }
       />
-      <SearchButton
-        disabled={!searchTerm.trim()}
-        // onClick={() => handleSearch(searchTerm)}
-      >
+      <SearchButton disabled={!searchTerm.trim()}>
         <FaSearch />
       </SearchButton>
 

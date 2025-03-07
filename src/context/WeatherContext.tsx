@@ -70,7 +70,14 @@ const processDailyForecast = (
     }
   >();
 
-  forecastList.forEach((entry) => {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  // Filter out the current day from the forecast list
+  const filteredForecastList = forecastList.filter(
+    (entry) => new Date(entry.dt * 1000).setHours(0, 0, 0, 0) > currentDate
+  );
+
+  filteredForecastList.forEach((entry) => {
     const date = new Date(entry.dt * 1000).setHours(0, 0, 0, 0); // Normalize to day start
     if (!dailyMap.has(date)) {
       dailyMap.set(date, {
@@ -88,7 +95,13 @@ const processDailyForecast = (
     dayData.icons.push(entry.weather[0].icon);
   });
 
-  return Array.from(dailyMap.entries()).map(([dt, data]) => ({
+  // Sort the entries by date in ascending order (earliest to latest)
+  const sortedForecast = Array.from(dailyMap.entries()).sort(
+    ([dtA], [dtB]) => dtA - dtB
+  );
+
+  // Ensure you only return the first 5 days of forecast data
+  return sortedForecast.slice(0, 5).map(([dt, data]) => ({
     dt,
     temp: {
       day: Math.max(...data.temps), // Use max temp for the day
