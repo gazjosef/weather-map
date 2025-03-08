@@ -17,7 +17,8 @@ const WeatherMap = () => {
   const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
     rain:
       "https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY,
+      import.meta.env.VITE_OPENWEATHER_API_KEY +
+      "&animation=true",
     clouds:
       "https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=" +
       import.meta.env.VITE_OPENWEATHER_API_KEY,
@@ -46,13 +47,14 @@ const WeatherMap = () => {
       {activeOverlay && (
         <TileLayer
           url={weatherLayers[activeOverlay]}
-          opacity={0.7}
-          zIndex={500}
+          // backgroundColor={"rgba(0, 0, 0, 0.3)"}
+          // opacity={0.7}
+          // zIndex={500}
         />
       )}
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        opacity={0.8}
+        opacity={1}
       />
       {/* <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" /> */}
       {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" /> */}

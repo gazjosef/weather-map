@@ -6,3 +6,12 @@
   height: 100vh;
   width: 100%;
 }
+
+.leaflet-tile {
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+  filter: "hue-rotate(180deg) saturate(1.5)";
+  /* filter: contrast(1.5) brightness(0.8) saturate(1.8); */
+  color: crimson;
+  z-index: 500;
+}
