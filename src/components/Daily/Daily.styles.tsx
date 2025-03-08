@@ -12,6 +12,10 @@ export const DailyForecastContainer = styled.div`
 
   color: white;
 `;
+export const DailyForecastDay = styled.span`
+  width: 2.5rem;
+  font-weight: bold;
+`;
 
 export const ForecastItem = styled.div`
   /* background: rgba(255, 255, 255, 0.1); */

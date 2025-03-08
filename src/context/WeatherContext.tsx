@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-
 // WeatherData interface for current weather
 export interface WeatherData {
   name: string;

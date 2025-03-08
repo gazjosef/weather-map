@@ -80,14 +80,14 @@ const OverlayControls: React.FC<OverlayControlsProps> = ({
   return (
     <div
       style={{
-        position: "absolute",
-        top: 10,
-        right: 10,
-        zIndex: 2000,
         background: "rgba(0,0,0,0.6)",
         padding: "5px",
         borderRadius: "5px",
-        pointerEvents: "auto",
+        position: "absolute",
+        top: 10,
+        right: 10,
+        zIndex: 9999,
+        // pointerEvents: "auto",
       }}
     >
       {[
