@@ -1,3 +1,5 @@
+import "./utils/fixLeafletIcons"; // Adjust the path as needed
+
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import Sidebar from "./components/Sidebar/Sidebar";
