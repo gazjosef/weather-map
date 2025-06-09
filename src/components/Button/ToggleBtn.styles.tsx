@@ -8,7 +8,7 @@ export const ToggleButton = styled.button`
   background-color: #444;
   /* background-color: orangered; */
   border: none;
-  border-radius: 50%;
+  border-radius: 0.8rem;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   padding: 10px;
 
@@ -18,9 +18,9 @@ export const ToggleButton = styled.button`
 
   color: white;
 
-  position: absolute;
+  /* position: absolute;
   left: 2rem;
-  top: 12rem;
+  top: 12rem; */
   transition: right 0.3s ease-in-out;
   z-index: 9999;
   transform: translateY(-50%);

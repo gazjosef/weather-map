@@ -5,6 +5,8 @@ export const InfoBox = styled.div`
   min-width: 15rem;
   padding: 10px 15px;
   border-radius: 10px;
+  border: 1px solid rgba(220, 220, 220, 0.5);
+
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   flex-direction: column;
@@ -13,6 +15,7 @@ export const InfoBox = styled.div`
 
   color: white;
   text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 
   position: absolute;
   bottom: 10px;

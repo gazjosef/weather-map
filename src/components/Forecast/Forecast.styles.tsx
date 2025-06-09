@@ -4,6 +4,7 @@ export const ForecastContainer = styled.div`
   background-color: #222;
   padding: 1rem;
   border-radius: 0.8rem;
+  border: 1px solid rgba(220, 220, 220, 0.5);
 
   display: flex;
   gap: 0.75rem;

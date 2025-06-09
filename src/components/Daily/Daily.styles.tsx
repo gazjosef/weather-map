@@ -3,7 +3,9 @@ import styled from "styled-components";
 export const DailyForecastContainer = styled.div`
   padding: 1rem;
   background-color: #222;
-  border-radius: 8px;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(220, 220, 220, 0.5);
+
   width: 100%;
 
   display: flex;
@@ -20,10 +22,14 @@ export const DailyForecastDay = styled.span`
 export const ForecastItem = styled.div`
   /* background: rgba(255, 255, 255, 0.1); */
   border-radius: 0.8rem;
-  padding: 0 0.75rem;
+  padding: 0 0 0 2rem;
 
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
+  align-items: center; */
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
   align-items: center;
 `;
 

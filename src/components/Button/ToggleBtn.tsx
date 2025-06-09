@@ -4,10 +4,20 @@ import { ToggleButton } from "./ToggleBtn.styles";
 
 const ToggleBtn = () => {
   const { isCollapsed, toggleCollapsed } = useWeather();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // React synthetic event
+    e.nativeEvent.stopImmediatePropagation(); // Leaflet native event fix
+    toggleCollapsed();
+    console.log("working");
+  };
+
   return (
-    <ToggleButton onClick={() => toggleCollapsed()}>
-      {isCollapsed ? <FaBars /> : <FaChevronLeft />}
-    </ToggleButton>
+    <div>
+      <ToggleButton onClick={handleClick}>
+        {isCollapsed ? <FaBars /> : <FaChevronLeft />}
+      </ToggleButton>
+    </div>
   );
 };
 export default ToggleBtn;

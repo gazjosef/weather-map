@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 export const SearchContainer = styled.div`
+  border: 1px solid rgba(220, 220, 220, 0.5);
+  border-radius: 0.5rem;
+
   position: relative;
   display: flex;
 `;

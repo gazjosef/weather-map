@@ -28,45 +28,67 @@ const WeatherMap = () => {
   };
 
   return (
-    <MapContainer
-      center={coordinates}
-      zoom={10}
-      style={{
-        height: "100%",
-        width: "100%",
-        border: "1rem solid #dcdcdc",
-        borderRadius: "2rem",
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      <ToggleButton />
-      <Info />
-      <MapClickHandler />
-      <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
-      {activeOverlay && (
+    <div style={{ height: "100%", width: "100%", position: "relative" }}>
+      <MapContainer
+        center={coordinates}
+        zoom={10}
+        style={{
+          height: "100%",
+          width: "100%",
+          border: ".75rem solid rgba(220, 220, 220, 0.5)",
+          borderRadius: "2rem",
+          overflow: "hidden",
+          position: "relative",
+        }}
+      >
+        {/* <ToggleButton /> */}
+        <Info />
+        <MapClickHandler />
+        <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
+        {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
         <TileLayer
-          url={weatherLayers[activeOverlay]}
-          // backgroundColor={"rgba(0, 0, 0, 0.3)"}
-          // opacity={0.7}
-          // zIndex={500}
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          opacity={1}
         />
-      )}
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        opacity={1}
-      />
-      {/* <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" /> */}
-      {/* <TileLayer url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" /> */}
 
-      <Marker position={coordinates}>
-        <Popup>Selected Location</Popup>
-      </Marker>
-      <OverlayControls
-        setActiveOverlay={setActiveOverlay}
-        activeOverlay={activeOverlay}
-      />
-    </MapContainer>
+        <Marker position={coordinates}>
+          <Popup>Selected Location</Popup>
+        </Marker>
+      </MapContainer>
+
+      {/* Overlay Controls positioned outside the map container */}
+      <div
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 10000,
+          background: "rgba(0,0,0,0.6)",
+          padding: "5px",
+          borderRadius: "5px",
+          border: "1px solid rgba(220, 220, 220, 0.5)",
+          pointerEvents: "auto", // Make sure it receives mouse events
+        }}
+      >
+        <OverlayControls
+          setActiveOverlay={setActiveOverlay}
+          activeOverlay={activeOverlay}
+        />
+      </div>
+
+      {/* Render the toggle button outside MapContainer */}
+      <div
+        style={{
+          position: "absolute",
+          left: "2rem",
+          top: "12rem",
+          zIndex: 10000,
+          pointerEvents: "auto",
+        }}
+      >
+        <ToggleButton />
+      </div>
+    </div>
   );
 };
 
@@ -80,20 +102,9 @@ const OverlayControls: React.FC<OverlayControlsProps> = ({
   activeOverlay,
 }) => {
   return (
-    <div
-      style={{
-        background: "rgba(0,0,0,0.6)",
-        padding: "5px",
-        borderRadius: "5px",
-        position: "absolute",
-        top: 10,
-        right: 10,
-        zIndex: 9999,
-        // pointerEvents: "auto",
-      }}
-    >
+    <div>
       {[
-        { name: "Rain", key: "rain" as const },
+        // { name: "Rain", key: "rain" as const },
         { name: "Clouds", key: "clouds" as const },
         { name: "Temperature", key: "temp" as const },
       ].map(({ name, key }) => (
