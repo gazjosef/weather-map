@@ -23,9 +23,9 @@ const DailyForecast = () => {
             src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
             alt={day.weather[0].description}
           />
-          <span>{day.temp.night}°C</span>
+          <span>{Math.round(day.temp.night)}°C</span>
           <span>
-            <strong>{day.temp.day}°C</strong>
+            <strong>{Math.round(day.temp.day)}°C</strong>
           </span>
         </ForecastItem>
       ))}

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const DailyForecastContainer = styled.div`
-  padding: 1rem;
+  padding: 1rem 0;
   background-color: #222;
   border-radius: 0.8rem;
   border: 1px solid rgba(220, 220, 220, 0.5);
@@ -22,11 +22,7 @@ export const DailyForecastDay = styled.span`
 export const ForecastItem = styled.div`
   /* background: rgba(255, 255, 255, 0.1); */
   border-radius: 0.8rem;
-  padding: 0 0 0 2rem;
-
-  /* display: flex;
-  justify-content: space-between;
-  align-items: center; */
+  padding: 0 0 0 3rem;
 
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
