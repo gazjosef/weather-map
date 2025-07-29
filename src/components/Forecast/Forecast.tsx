@@ -6,64 +6,18 @@ import {
   WeatherIcon,
 } from "./Forecast.styles";
 
-interface Weather {
-  id: number;
-  main: string;
-  description: string;
-  icon: string;
-}
-
-interface MainWeather {
-  temp: number;
-  feels_like: number;
-  temp_min: number;
-  temp_max: number;
-  pressure: number;
-  sea_level: number;
-  grnd_level: number;
-  humidity: number;
-  temp_kf: number;
-}
-
-interface Wind {
-  speed: number;
-  deg: number;
-  gust: number;
-}
-
-interface Rain {
-  "3h": number;
-}
-interface HourlyForecastItem {
-  dt: number;
-  main: MainWeather;
-  weather: Weather[];
-  clouds: { all: number };
-  wind: Wind;
-  visibility: number;
-  pop: number;
-  rain: Rain;
-  sys: { pod: string };
-  dt_txt: string;
-}
-
-interface HourlyForecastResponse {
-  cod: string;
-  message: number;
-  cnt: number;
-  list: HourlyForecastItem[];
-}
+import type { ForecastItem as ForecastItemType } from "../../types/weather";
 
 const WeatherForecast = () => {
   const { hourlyForecast } = useWeather() as {
-    hourlyForecast: HourlyForecastResponse | null;
+    hourlyForecast: ForecastItemType[] | null;
   };
 
   if (!hourlyForecast) {
     return <p>Loading...</p>;
   }
 
-  const nextFiveHours = hourlyForecast.list.slice(0, 5);
+  const nextFiveHours = hourlyForecast.slice(0, 5);
 
   return (
     <ForecastContainer>

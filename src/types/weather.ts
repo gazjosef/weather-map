@@ -70,3 +70,62 @@ export type DayData = {
   descriptions: string[];
   icons: string[];
 };
+
+export interface Weather {
+  id: number;
+  main: string;
+  description: string;
+  icon: string;
+}
+
+export interface MainWeather {
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  pressure: number;
+  sea_level?: number;
+  grnd_level?: number;
+  humidity: number;
+  temp_kf?: number;
+}
+
+export interface Wind {
+  speed: number;
+  deg: number;
+  gust?: number;
+}
+
+export interface Rain {
+  "3h"?: number;
+}
+
+export interface HourlyForecastItem {
+  dt: number; // timestamp in seconds
+  main: MainWeather;
+  weather: Weather[];
+  clouds: { all: number };
+  wind: Wind;
+  visibility: number;
+  pop: number; // Probability of precipitation
+  rain?: Rain;
+  sys: { pod: string };
+  dt_txt: string; // date time as string
+}
+
+export interface HourlyForecastResponse {
+  cod: string;
+  message: number;
+  cnt: number; // number of forecast items
+  list: HourlyForecastItem[];
+  city: {
+    id: number;
+    name: string;
+    coord: { lat: number; lon: number };
+    country: string;
+    population: number;
+    timezone: number;
+    sunrise: number;
+    sunset: number;
+  };
+}

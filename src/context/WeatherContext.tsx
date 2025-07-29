@@ -1,44 +1,13 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-// import { useFetchWeatherByCity } from "../hooks/useFetchWeatherByCity";
-// import { useFetchWeatherByCoords } from "../hooks/useFetchWeatherByCoords";
-import { processDailyForecast } from "../utils/forecastHelpers";
+import React, { createContext, useContext, useState } from "react";
+import { useFetchWeatherByCity } from "../hooks/useFetchWeatherByCity";
+import { useFetchWeatherByCoords } from "../hooks/useFetchWeatherByCoords";
 
 // Interfaces
-import {
-  WeatherData,
-  DailyForecast,
-  HourlyForecast,
-  // ForecastItem,
-} from "../types/weather";
-
-// interface ForecastItem {
-//   dt: number;
-//   main: {
-//     temp: number;
-//     feels_like?: number;
-//     temp_min?: number;
-//     temp_max?: number;
-//     pressure?: number;
-//     humidity?: number;
-//     temp_kf?: number;
-//   };
-//   weather: {
-//     id?: number;
-//     main?: string;
-//     description: string;
-//     icon: string;
-//   }[];
-//   wind: {
-//     speed: number;
-//     deg?: number;
-//     gust?: number;
-//   };
-//   dt_txt?: string;
-// }
+import { WeatherData, DailyForecast, ForecastItem } from "../types/weather";
 
 export interface WeatherContextType {
   currentWeather: WeatherData | null;
-  hourlyForecast: HourlyForecast[] | null;
+  hourlyForecast: ForecastItem[] | null;
   dailyForecast: DailyForecast[] | null;
   setCity: (city: string) => void;
   setCountryCode: (countryCode: string) => void;
@@ -67,7 +36,7 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(
     null
   );
-  const [hourlyForecast, setHourlyForecast] = useState<HourlyForecast[] | null>(
+  const [hourlyForecast, setHourlyForecast] = useState<ForecastItem[] | null>(
     null
   );
   const [dailyForecast, setDailyForecast] = useState<DailyForecast[] | null>(
@@ -79,70 +48,21 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsCollapsed((prev) => !prev);
   };
 
-  // Fetch weather data based on city and country code
-  useEffect(() => {
-    if (city && countryCode) {
-      const fetchWeatherData = async () => {
-        try {
-          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  useFetchWeatherByCity(
+    city,
+    countryCode,
+    unit,
+    setCurrentWeather,
+    setHourlyForecast,
+    setDailyForecast
+  );
 
-          // Fetch Current Weather
-          const weatherRes = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city},${countryCode}&units=metric&appid=${apiKey}`
-          );
-          const weatherData = await weatherRes.json();
-          setCurrentWeather(weatherData);
-
-          // Fetch Hourly Forecast + Daily Forecast
-          const forecastRes = await fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${city},${countryCode}&units=metric&appid=${apiKey}`
-          );
-          const forecastData = await forecastRes.json();
-          setHourlyForecast(forecastData);
-
-          const dailySummaries = processDailyForecast(forecastData.list);
-          console.log("dailySummaries", forecastData.list);
-          setDailyForecast(dailySummaries);
-        } catch (error) {
-          console.error("Error fetching weather data:", error);
-        }
-      };
-
-      fetchWeatherData();
-    }
-  }, [city, countryCode]);
-
-  useEffect(() => {
-    if (coordinates) {
-      const fetchWeatherByCoords = async () => {
-        try {
-          const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
-          const [lat, lon] = coordinates;
-
-          // Fetch Current Weather by lat/lon
-          const weatherRes = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-          );
-          const weatherData = await weatherRes.json();
-          setCurrentWeather(weatherData);
-
-          // Fetch Hourly & Daily Forecast by lat/lon
-          const forecastRes = await fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-          );
-          const forecastData = await forecastRes.json();
-          setHourlyForecast(forecastData);
-
-          const dailySummaries = processDailyForecast(forecastData.list);
-          setDailyForecast(dailySummaries);
-        } catch (error) {
-          console.error("Error fetching weather by coordinates:", error);
-        }
-      };
-
-      fetchWeatherByCoords();
-    }
-  }, [coordinates]); // ✅ Runs only when coordinates change
+  useFetchWeatherByCoords(
+    coordinates,
+    setCurrentWeather,
+    setHourlyForecast,
+    setDailyForecast
+  );
 
   return (
     <WeatherContext.Provider

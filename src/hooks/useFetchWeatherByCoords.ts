@@ -25,7 +25,7 @@ export const useFetchWeatherByCoords = (
           `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
         );
         const forecastData = await resForecast.json();
-        setHourlyForecast(forecastData);
+        setHourlyForecast(forecastData.list);
         setDailyForecast(processDailyForecast(forecastData.list));
       } catch (err) {
         console.error("Error fetching by coordinates:", err);
