@@ -1,4 +1,4 @@
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 import { format } from "date-fns";
 import {
   DailyForecastContainer,

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import { useFetchWeatherByCity } from "../hooks/useFetchWeatherByCity";
 import { useFetchWeatherByCoords } from "../hooks/useFetchWeatherByCoords";
 
@@ -86,9 +86,4 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useWeather = () => {
-  const context = useContext(WeatherContext);
-  if (!context)
-    throw new Error("useWeather must be used within a WeatherProvider");
-  return context;
-};
+export default WeatherContext;

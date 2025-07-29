@@ -1,4 +1,4 @@
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 import { FaChevronLeft, FaBars } from "react-icons/fa";
 import { ToggleButton } from "./ToggleBtn.styles";
 

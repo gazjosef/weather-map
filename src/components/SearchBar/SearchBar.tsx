@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 import { FaSearch } from "react-icons/fa";
 import {
   SearchButton,

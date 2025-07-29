@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 
 interface MapUpdaterProps {
   center: [number, number];

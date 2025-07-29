@@ -1,8 +1,10 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import type { TileLayerProps } from "react-leaflet";
+
 import "leaflet/dist/leaflet.css";
 
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 import ToggleButton from "../Button/ToggleBtn";
 import Info from "../Info/Info";
 import MapClickHandler from "./MapClickHandler";
@@ -46,9 +48,12 @@ const WeatherMap = () => {
         <MapClickHandler />
         <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
         {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
+
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          opacity={1}
+          {...({
+            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            opacity: 1,
+          } as TileLayerProps)}
         />
 
         <Marker position={coordinates}>
