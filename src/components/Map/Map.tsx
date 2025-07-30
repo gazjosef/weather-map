@@ -1,64 +1,38 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import type { TileLayerProps } from "react-leaflet";
-
+import { useState } from "react";
+import { MapContainer } from "react-leaflet";
+import type { MapContainerProps } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { useWeather } from "../../context/useWeather";
 import ToggleButton from "../Button/ToggleBtn";
-import Info from "../Info/Info";
-import MapClickHandler from "./MapClickHandler";
-import MapUpdater from "./MapUpdater";
+import MapContent from "../Map/MapContent";
+import OverlayControls from "./OverlayControls";
 
 const WeatherMap = () => {
-  const { coordinates, isCollapsed } = useWeather();
+  const { coordinates } = useWeather();
   const [activeOverlay, setActiveOverlay] = useState<
     "rain" | "clouds" | "temp" | null
   >(null);
 
-  const weatherLayers: Record<"rain" | "clouds" | "temp", string> = {
-    rain:
-      "https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY +
-      "&animation=true",
-    clouds:
-      "https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY,
-    temp:
-      "https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=" +
-      import.meta.env.VITE_OPENWEATHER_API_KEY,
-  };
+  console.log("Coordinates:", coordinates);
 
   return (
     <div style={{ height: "100%", width: "100%", position: "relative" }}>
       <MapContainer
-        center={coordinates}
-        zoom={10}
-        style={{
-          height: "100%",
-          width: "100%",
-          border: ".75rem solid rgba(220, 220, 220, 0.5)",
-          borderRadius: "2rem",
-          overflow: "hidden",
-          position: "relative",
-        }}
+        {...({
+          center: coordinates,
+          zoom: 13,
+          style: {
+            height: "100%",
+            width: "100%",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            overflow: "hidden",
+            position: "relative",
+          },
+        } as MapContainerProps)}
       >
-        {/* <ToggleButton /> */}
-        <Info />
-        <MapClickHandler />
-        <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
-        {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
-
-        <TileLayer
-          {...({
-            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            opacity: 1,
-          } as TileLayerProps)}
-        />
-
-        <Marker position={coordinates}>
-          <Popup>Selected Location</Popup>
-        </Marker>
+        <MapContent coordinates={coordinates} activeOverlay={activeOverlay} />
       </MapContainer>
 
       {/* Overlay Controls positioned outside the map container */}
@@ -93,41 +67,6 @@ const WeatherMap = () => {
       >
         <ToggleButton />
       </div>
-    </div>
-  );
-};
-
-interface OverlayControlsProps {
-  setActiveOverlay: Dispatch<SetStateAction<"rain" | "clouds" | "temp" | null>>;
-  activeOverlay: "rain" | "clouds" | "temp" | null;
-}
-
-const OverlayControls: React.FC<OverlayControlsProps> = ({
-  setActiveOverlay,
-  activeOverlay,
-}) => {
-  return (
-    <div>
-      {[
-        // { name: "Rain", key: "rain" as const },
-        { name: "Clouds", key: "clouds" as const },
-        { name: "Temperature", key: "temp" as const },
-      ].map(({ name, key }) => (
-        <button
-          key={key}
-          onClick={() => setActiveOverlay(activeOverlay === key ? null : key)}
-          style={{
-            background: activeOverlay === key ? "#3498db" : "#2c3e50",
-            color: "white",
-            border: "none",
-            margin: "5px",
-            padding: "5px",
-            cursor: "pointer",
-          }}
-        >
-          {name}
-        </button>
-      ))}
     </div>
   );
 };
