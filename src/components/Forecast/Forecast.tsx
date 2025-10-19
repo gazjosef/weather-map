@@ -1,8 +1,9 @@
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 import { format } from "date-fns";
 import { ForecastContainer, ForecastItem } from "./Forecast.styles";
 import WeatherIcon from "../Icon/Icon"; // ✅ <-- NEW import
 
+<<<<<<< HEAD
 interface Weather {
   id: number;
   main: string;
@@ -51,17 +52,20 @@ interface HourlyForecastResponse {
   cnt: number;
   list: HourlyForecastItem[];
 }
+=======
+import type { ForecastItem as ForecastItemType } from "../../types/weather";
+>>>>>>> d3a8646bc53e4915b69c9d3b777d6f62b250bf24
 
 const WeatherForecast = () => {
   const { hourlyForecast } = useWeather() as {
-    hourlyForecast: HourlyForecastResponse | null;
+    hourlyForecast: ForecastItemType[] | null;
   };
 
   if (!hourlyForecast) {
     return <p>Loading...</p>;
   }
 
-  const nextFiveHours = hourlyForecast.list.slice(0, 5);
+  const nextFiveHours = hourlyForecast.slice(0, 5);
 
   return (
     <ForecastContainer>

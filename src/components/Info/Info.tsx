@@ -1,4 +1,4 @@
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 import { FlexColumn } from "../../styles/Layout";
 import { InfoBox, InfoDescription, InfoTemp, InfoTitle } from "./Info.styles";
 

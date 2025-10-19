@@ -1,5 +1,5 @@
 import { useMapEvents } from "react-leaflet";
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 
 const MapClickHandler = () => {
   const { setCoordinates } = useWeather(); // Update global coordinates

@@ -1,4 +1,4 @@
-import { useWeather } from "../../context/WeatherContext";
+import { useWeather } from "../../context/useWeather";
 // Components
 import SearchBar from "../SearchBar/SearchBar";
 import Logo from "../Logo/Logo";
