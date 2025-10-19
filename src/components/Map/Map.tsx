@@ -51,6 +51,11 @@ const WeatherMap = () => {
           opacity={1}
         />
 
+        {/* <TileLayer
+          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles by Humanitarian OpenStreetMap Team'
+        /> */}
+
         <Marker position={coordinates}>
           <Popup>Selected Location</Popup>
         </Marker>

@@ -4,31 +4,36 @@ import {
   DailyForecastContainer,
   DailyForecastDay,
   ForecastItem,
-  WeatherIcon,
 } from "./Daily.styles";
+import WeatherIcon from "../Icon/Icon"; // ✅ NEW import
 
 const DailyForecast = () => {
   const { dailyForecast } = useWeather();
 
   return (
     <DailyForecastContainer>
-      {dailyForecast?.map((day, index) => (
-        <ForecastItem key={day.dt}>
-          <DailyForecastDay>
-            {index === 0
-              ? "TODAY"
-              : format(new Date(day.dt * 1000), "EEE").toUpperCase()}
-          </DailyForecastDay>
-          <WeatherIcon
-            src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
-            alt={day.weather[0].description}
-          />
-          <span>{Math.round(day.temp.night)}°C</span>
-          <span>
-            <strong>{Math.round(day.temp.day)}°C</strong>
-          </span>
-        </ForecastItem>
-      ))}
+      {dailyForecast?.map((day, index) => {
+        const iconCode = day.weather[0].icon; // e.g. "10d"
+        const description = day.weather[0].description;
+
+        return (
+          <ForecastItem key={day.dt}>
+            <DailyForecastDay>
+              {index === 0
+                ? "TODAY"
+                : format(new Date(day.dt * 1000), "EEE").toUpperCase()}
+            </DailyForecastDay>
+
+            {/* ✅ Use your local WeatherIcon instead of external URL */}
+            <WeatherIcon iconCode={iconCode} alt={description} />
+
+            <span>{Math.round(day.temp.night)}°C</span>
+            <span>
+              <strong>{Math.round(day.temp.day)}°C</strong>
+            </span>
+          </ForecastItem>
+        );
+      })}
     </DailyForecastContainer>
   );
 };

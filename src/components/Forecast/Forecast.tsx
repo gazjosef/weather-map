@@ -1,10 +1,7 @@
 import { useWeather } from "../../context/WeatherContext";
 import { format } from "date-fns";
-import {
-  ForecastContainer,
-  ForecastItem,
-  WeatherIcon,
-} from "./Forecast.styles";
+import { ForecastContainer, ForecastItem } from "./Forecast.styles";
+import WeatherIcon from "../Icon/Icon"; // ✅ <-- NEW import
 
 interface Weather {
   id: number;
@@ -34,6 +31,7 @@ interface Wind {
 interface Rain {
   "3h": number;
 }
+
 interface HourlyForecastItem {
   dt: number;
   main: MainWeather;
@@ -42,7 +40,7 @@ interface HourlyForecastItem {
   wind: Wind;
   visibility: number;
   pop: number;
-  rain: Rain;
+  rain?: Rain; // optional because it may not always exist
   sys: { pod: string };
   dt_txt: string;
 }
@@ -70,15 +68,16 @@ const WeatherForecast = () => {
       {nextFiveHours.map((hourData, index) => {
         const localTime = new Date(hourData.dt * 1000);
         const formattedTime = format(localTime, "h a");
-        const icon = hourData.weather[0].icon; // Assuming there's always at least one weather condition per hour
+        const iconCode = hourData.weather[0].icon;
         const temp = Math.round(hourData.main.temp);
 
         return (
           <ForecastItem key={hourData.dt}>
             <span>{index === 0 ? "NOW" : formattedTime}</span>
+            {/* ✅ Use your local SVG-based component instead */}
             <WeatherIcon
-              src={`https://openweathermap.org/img/wn/${icon}.png`}
-              alt="weather"
+              iconCode={iconCode}
+              alt={hourData.weather[0].description}
             />
             <span>{temp}°C</span>
           </ForecastItem>
