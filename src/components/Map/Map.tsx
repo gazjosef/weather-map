@@ -32,28 +32,11 @@ const WeatherMap = () => {
           },
         } as MapContainerProps)}
       >
-<<<<<<< HEAD
-        {/* <ToggleButton /> */}
-        <Info />
-        <MapClickHandler />
-        <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
-        {activeOverlay && <TileLayer url={weatherLayers[activeOverlay]} />}
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          opacity={1}
-        />
-
-        {/* <TileLayer
-          url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles by Humanitarian OpenStreetMap Team'
-        /> */}
-
-        <Marker position={coordinates}>
-          <Popup>Selected Location</Popup>
-        </Marker>
-=======
+        {/* 
+          MapContent handles all map internals (TileLayers, overlays, markers, etc.)
+          You can adjust it to switch base layers (e.g. Shortbread later)
+        */}
         <MapContent coordinates={coordinates} activeOverlay={activeOverlay} />
->>>>>>> d3a8646bc53e4915b69c9d3b777d6f62b250bf24
       </MapContainer>
 
       {/* Overlay Controls positioned outside the map container */}
@@ -67,7 +50,7 @@ const WeatherMap = () => {
           padding: "5px",
           borderRadius: "5px",
           border: "1px solid rgba(220, 220, 220, 0.5)",
-          pointerEvents: "auto", // Make sure it receives mouse events
+          pointerEvents: "auto",
         }}
       >
         <OverlayControls
