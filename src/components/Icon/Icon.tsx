@@ -8,21 +8,19 @@ const Icon = styled.img`
   height: 40px;
 `;
 
-// Define the valid keys from your icon map
 type IconCode = keyof typeof weatherIconMap;
 
-// Props type
 interface WeatherIconProps {
   iconCode: string;
   alt?: string;
 }
 
 const WeatherIcon: React.FC<WeatherIconProps> = ({ iconCode, alt }) => {
-  // Use type narrowing to ensure safe lookup
   const iconFile = weatherIconMap[iconCode as IconCode] ?? "not-available.svg";
 
-  // Adjust path depending on your setup
-  const iconPath = `/src/assets/icons/${iconFile}`;
+  // ✅ Use `new URL()` so Vite resolves it correctly in production
+  const iconPath = new URL(`../../assets/icons/${iconFile}`, import.meta.url)
+    .href;
 
   return <Icon src={iconPath} alt={alt ?? "weather icon"} />;
 };
