@@ -35,9 +35,31 @@ const WeatherMapContent: React.FC<Props> = ({ coordinates, activeOverlay }) => {
       <MapClickHandler />
       <MapUpdater center={coordinates} isCollapsed={isCollapsed} />
 
-      <TileLayer
+      {/* <TileLayer
         {...({
           url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          opacity: 1,
+        } as TileLayerProps)}
+      /> */}
+
+      {/* <TileLayer
+        {...({
+          url: "https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.png",
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+            '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>',
+          opacity: 1,
+        } as TileLayerProps)}
+      /> */}
+
+      <TileLayer
+        {...({
+          url: `https://api.maptiler.com/maps/bright/{z}/{x}/{y}.png?key=${
+            import.meta.env.VITE_MAPTILER_API_KEY
+          }`,
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+            '&copy; <a href="https://www.maptiler.com/">MapTiler</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a>',
           opacity: 1,
         } as TileLayerProps)}
       />
